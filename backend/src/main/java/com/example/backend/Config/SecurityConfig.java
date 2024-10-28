@@ -1,5 +1,6 @@
 package com.example.backend.Config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,6 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -21,15 +23,24 @@ public class SecurityConfig {
     // Injects a custom UserDetailsService implementation for loading user data during authentication
     private UserDetailsService userDetailsService;
 
+    // Injects the JWT filter to intercept requests and validate JWT tokens before authentication
+    @Autowired
+    private JwtFilter jwtFilter;
+
     public SecurityConfig(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
     /* Configures the security filter chain to define application security settings.
-        - Disables CSRF for stateless sessions.
-        - Requires authentication for all requests.
-        - Enables HTTP Basic Authentication.
-        - Sets session management policy to stateless. */
+        - Disables CSRF protection for a stateless RESTful API.
+        - Requires authentication for all requests by default.
+        - Enables HTTP Basic Authentication for simplicity.
+        - Sets session management policy to stateless, as JWT tokens are used for stateful user sessions.
+        - Adds JwtFilter before the UsernamePasswordAuthenticationFilter to validate JWT tokens on each request.
+
+     param http - the HttpSecurity configuration for managing security
+     return - the configured SecurityFilterChain instance
+     throws Exception - if an error occurs during filter chain setup */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
@@ -39,6 +50,7 @@ public class SecurityConfig {
                 )
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
@@ -53,8 +65,13 @@ public class SecurityConfig {
         return provider;
     }
 
-    /* Provides a custom AuthenticationManager using the application’s authentication configuration.
-       This manager handles authentication requests, leveraging the configured AuthenticationProvider. */
+    /* Configures a custom AuthenticationManager bean for handling authentication requests.
+        - Retrieves the default AuthenticationManager from the application’s configured AuthenticationProvider.
+        - Allows injection of the AuthenticationManager into other components for custom authentication handling.
+
+     param config - the AuthenticationConfiguration instance used to build the AuthenticationManager
+     return - the configured AuthenticationManager instance
+     throws Exception - if an error occurs while retrieving the AuthenticationManager */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
