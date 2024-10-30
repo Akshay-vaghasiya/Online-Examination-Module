@@ -33,7 +33,7 @@ public class SecurityConfig {
 
     /* Configures the security filter chain to define application security settings.
         - Disables CSRF protection for a stateless RESTful API.
-        - Requires authentication for all requests by default.
+        - Requires authentication for all requests by default. Authentication related requests are public. Other requests are having role base permission.
         - Enables HTTP Basic Authentication for simplicity.
         - Sets session management policy to stateless, as JWT tokens are used for stateful user sessions.
         - Adds JwtFilter before the UsernamePasswordAuthenticationFilter to validate JWT tokens on each request.
@@ -46,6 +46,8 @@ public class SecurityConfig {
         return http
                 .csrf(customizer -> customizer.disable())
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/api/auth/register").hasRole("ADMIN")
+                        .requestMatchers( "/api/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())

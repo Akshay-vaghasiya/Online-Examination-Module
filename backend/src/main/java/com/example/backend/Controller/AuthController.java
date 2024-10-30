@@ -2,6 +2,7 @@ package com.example.backend.Controller;
 
 import com.example.backend.Dto.JwtRequest;
 import com.example.backend.Dto.RegisterRequest;
+import com.example.backend.Service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

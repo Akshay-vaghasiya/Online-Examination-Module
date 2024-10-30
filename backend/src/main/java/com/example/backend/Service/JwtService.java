@@ -29,7 +29,7 @@ public class JwtService {
      param email - the user's email to set as subject and claim
      param password - the user's password (not used in claims, but could be for additional payload)
      return - a signed JWT token as a String */
-    public String generateToken(String email, String password) {
+    public String generateToken(String email) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("email", email);
 
