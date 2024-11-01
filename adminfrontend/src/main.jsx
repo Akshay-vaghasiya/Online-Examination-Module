@@ -1,10 +1,21 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
+import React from 'react';
+import App from './App';
+import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
+import { AuthProvider } from '../src/contexts/AuthContext';
 
+// Creating a theme for the Material-UI components
+const theme = createTheme();
+
+// Rendering the application into the DOM
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />
+  <StrictMode> {/* Enabling StrictMode for detecting issues */}
+    <AuthProvider> {/* Providing authentication context to the application */}
+      <ThemeProvider theme={theme}> {/* Applying the created theme to the application */}
+        <CssBaseline /> {/* Normalize CSS styles across browsers */}
+        <App />
+      </ThemeProvider>
+    </AuthProvider>
   </StrictMode>,
-)
+);
