@@ -23,6 +23,10 @@ import org.springframework.web.bind.annotation.*;
   - /reset-password: Completes the password reset by verifying the token and updating the user’s password. */
 @RestController
 @RequestMapping("/api/auth") // Base URL for all authentication-related endpoints
+/* This annotation allows cross-origin requests from any origin to access this controller's endpoints. It is
+used to enable Cross-Origin Resource Sharing (CORS), which is useful for enabling requests from different domains,
+especially in development environments or when the frontend and backend are hosted on different servers. */
+@CrossOrigin("*")
 public class AuthController {
 
     // Injects AuthService to handle authentication logic
