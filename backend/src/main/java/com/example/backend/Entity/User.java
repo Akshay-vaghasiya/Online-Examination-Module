@@ -6,16 +6,21 @@ import java.time.LocalDateTime;
 /* Entity class representing a User in the system.
 
  * This class maps to the "users" table in the database and contains fields for storing
-   essential user details like username, email, password, role, and timestamps. It supports
-   two roles: ADMIN and STUDENT, which are used to control access to different parts of the application.
+   essential user details like username, email, password, role, university affiliation, and timestamps.
 
  * Each user is uniquely identified by the userId (primary key), and email addresses are unique across users.
+ * The university field links each user to a University entity, allowing for optional affiliation with a university.
 
- * Timestamps include:
-  - createdAt: The account creation time.
-  - updatedAt: The last update time for the account.
+ * Timestamps:
+  - createdAt: Records the account creation time, useful for tracking the account's lifecycle.
+  - updatedAt: Records the last modification time for the account, useful for audit purposes.
 
- * The role field uses an enumeration (ADMIN, STUDENT) for type-safe role management.*/
+ * The role field uses an enumeration (ADMIN, STUDENT) for type-safe role management.
+ * The Role enum defines two possible roles that control access permissions within the application.
+
+ * Relationships:
+  - @ManyToOne: Links each user to a university, if applicable, establishing an optional many-to-one relationship.
+  - @JoinColumn(name = "university_id", nullable = true): Specifies the foreign key column in the "users" table to reference the "university" table. */
 @Entity
 @Table(name = "users")
 public class User {
@@ -35,6 +40,10 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
+
+    @ManyToOne
+    @JoinColumn(name = "university_id", nullable = true)
+    private University university;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -98,6 +107,14 @@ public class User {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public University getUniversity() {
+        return university;
+    }
+
+    public void setUniversity(University university) {
+        this.university = university;
     }
 }
 

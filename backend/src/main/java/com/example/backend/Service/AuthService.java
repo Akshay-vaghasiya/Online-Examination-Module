@@ -4,6 +4,7 @@ import com.example.backend.Dto.JwtRequest;
 import com.example.backend.Dto.JwtResponse;
 import com.example.backend.Dto.RegisterRequest;
 import com.example.backend.Entity.PasswordResetToken;
+import com.example.backend.Entity.University;
 import com.example.backend.Entity.User;
 import com.example.backend.Repository.PasswordResetTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,19 +45,27 @@ public class AuthService {
     @Autowired
     private PasswordResetTokenRepository tokenRepository;
 
+    // Injects UniversityService to manage University data
+    @Autowired
+    private UniversityService universityService;
+
     // Encrypts passwords using BCrypt with a strength of 12
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
-    /* Registers a new user with the role of STUDENT. Encodes the password before saving and delegates user saving to UserService.
+    /* Registers a new user with role parameter. Encodes the password before saving and delegates user saving to UserService.
 
-     param registerRequest - Contains user details, such as email, username, and password.
+     param registerRequest - Contains user details, such as email, username, password and university.
+     param role - Contains role of user which will register.
      return - ResponseEntity indicating the registration success or error status. */
-    public ResponseEntity<?> registerUser(RegisterRequest registerRequest) {
+    public ResponseEntity<?> registerUser(RegisterRequest registerRequest, User.Role role) {
         User user = new User();
         user.setPassword(encoder.encode(registerRequest.getPassword())); // Encodes password
         user.setEmail(registerRequest.getEmail());
         user.setUsername(registerRequest.getUsername());
-        user.setRole(User.Role.STUDENT);
+        user.setRole(role);
+
+        University university = universityService.getUniversityByName(registerRequest.getUniversity());
+        user.setUniversity(university);
 
         try {
             userService.saveUser(user); // Saves user data

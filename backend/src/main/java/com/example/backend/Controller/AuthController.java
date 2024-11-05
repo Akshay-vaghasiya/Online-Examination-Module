@@ -2,6 +2,7 @@ package com.example.backend.Controller;
 
 import com.example.backend.Dto.JwtRequest;
 import com.example.backend.Dto.RegisterRequest;
+import com.example.backend.Entity.User;
 import com.example.backend.Service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,8 @@ import org.springframework.web.bind.annotation.*;
     the processing of each request to the AuthService, which handles the core business logic.
 
  * Endpoints:
-  - /register: Handles new user registration.
+  - /register-student: Handles new student registration.
+  - /register-admin: Handles new admin registration.
   - /login-student: Authenticates a student user.
   - /login-admin: Authenticates an admin user.
   - /forgot-password: Initiates the password reset process by generating a password reset token and sending it to the user's email.
@@ -33,13 +35,22 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
-    /* Registers a new user in the system.
+    /* Registers a new student in the system.
 
-     param registerRequest - The request body containing user details.
-     return - ResponseEntity with the registration status or user details. */
-    @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody RegisterRequest registerRequest) {
-        return authService.registerUser(registerRequest);
+     param registerRequest - The request body containing student details.
+     return - ResponseEntity with the registration status or student details. */
+    @PostMapping("/register-student")
+    public ResponseEntity<?> registerStudent(@RequestBody RegisterRequest registerRequest) {
+        return authService.registerUser(registerRequest, User.Role.STUDENT);
+    }
+
+    /* Registers a new admin in the system.
+
+     param registerRequest - The request body containing admin details.
+     return - ResponseEntity with the registration status or admin details. */
+    @PostMapping("/register-admin")
+    public ResponseEntity<?> registerAdmin(@RequestBody RegisterRequest registerRequest) {
+        return authService.registerUser(registerRequest, User.Role.ADMIN);
     }
 
     /* Authenticates a student user and generates a JWT token upon successful login.

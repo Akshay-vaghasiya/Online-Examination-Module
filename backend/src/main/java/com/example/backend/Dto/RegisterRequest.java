@@ -1,8 +1,8 @@
 package com.example.backend.Dto;
 
 /* The RegisterRequest class is a Data Transfer Object (DTO) used to encapsulate the data needed to
-   register a new user. This class contains three main fields:
-    * email, username, and password, which are required for user registration.
+   register a new user. This class contains four main fields:
+    * email, username, password, and university, which are required for user registration.
 
  * Purpose:
   * This class is designed to collect and validate user registration information before it is processed
@@ -13,13 +13,15 @@ package com.example.backend.Dto;
   - email: Stores the user's unique email address, typically used for contact and user identification purposes.
   - username: Stores the user's chosen display name, which does not have to be unique across the application.
   - password: Stores the user's chosen password, which should be securely processed and stored following best practices.
+  - university: Stores the name of the university the user is associated with, allowing for university-specific registration and management.
 
  * Methods:
-  - Getter and Setter methods for each field are provided to allow controlled access and modification of the data fields.*/
+  - Getter and Setter methods for each field are provided to allow controlled access and modification of the data fields. */
 public class RegisterRequest {
     private String email;
     private String username;
     private String password;
+    private String university;
 
     public String getEmail() {
         return email;
@@ -43,5 +45,13 @@ public class RegisterRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getUniversity() {
+        return university;
+    }
+
+    public void setUniversity(String university) {
+        this.university = university;
     }
 }

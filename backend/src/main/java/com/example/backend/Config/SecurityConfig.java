@@ -1,5 +1,6 @@
 package com.example.backend.Config;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,11 +11,17 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+
+import java.util.Collections;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -37,6 +44,8 @@ public class SecurityConfig {
         - Enables HTTP Basic Authentication for simplicity.
         - Sets session management policy to stateless, as JWT tokens are used for stateful user sessions.
         - Adds JwtFilter before the UsernamePasswordAuthenticationFilter to validate JWT tokens on each request.
+        - Configures CORS (Cross-Origin Resource Sharing) to allow requests from specific origins, enabling interaction between the frontend and backend running on different ports.
+
 
      param http - the HttpSecurity configuration for managing security
      return - the configured SecurityFilterChain instance
@@ -44,9 +53,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(customizer -> customizer.disable())
+                .csrf(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/auth/register").hasRole("ADMIN")
+                        .requestMatchers("/api/auth/register-student","/api/auth/register-admin","/api/university/**").hasRole("ADMIN")
                         .requestMatchers( "/api/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
@@ -54,6 +64,28 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
+    }
+
+    /* Configures CORS settings to allow cross-origin requests from the frontend server.
+        - Allowed origins: http://localhost:5173, typically the frontend development server.
+        - Allows all HTTP methods and headers.
+        - Enables credential sharing and sets a max age for preflight requests. */
+    private CorsConfigurationSource corsConfigurationSource() {
+        return new CorsConfigurationSource() {
+            @Override
+            public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+                CorsConfiguration configuration = new CorsConfiguration();
+
+                configuration.setAllowedOrigins(Collections.singletonList("http://localhost:5173"));
+                configuration.setAllowedMethods(Collections.singletonList("*"));
+                configuration.setAllowCredentials(true);
+                configuration.setAllowedHeaders(Collections.singletonList("*"));
+                configuration.setExposedHeaders(List.of("Authorization"));
+                configuration.setMaxAge(3600L);
+
+                return configuration;
+            }
+        };
     }
 
     /* Configures the authentication provider with password encoding and user details service.
