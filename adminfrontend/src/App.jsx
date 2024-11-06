@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
 import DashboardLayout from './components/DashboardLayout';
 import LoginPage from './pages/LoginPage';
+import RegisterStudent from './pages/RegisterStudent';
 
 const App = () => {
   return (
@@ -13,7 +14,7 @@ const App = () => {
         {/* Protected route for admin dashboard and its nested routes */}
         <Route element={<ProtectedRoute />}>
           <Route path='/admin' element={<DashboardLayout />}>
-            {/* Nested routes for admin dashboard */}
+            <Route path="register-student" element={<RegisterStudent />} />
           </Route>
         </Route>
       </Routes>

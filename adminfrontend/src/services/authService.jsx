@@ -1,16 +1,27 @@
+// Import axios for HTTP requests and AuthHeader for setting headers
 import axios from 'axios';
+import AuthHeader from '../Helper/AuthHeader';
 
-// Set the base URL for the authentication API from environment variables
+// Base URL for authentication-related endpoints
 const API_URL = import.meta.env.VITE_API_URL + '/api/auth';
 
-// Define an asynchronous login function
+// Send login request for admin with provided login data
 const login = async (data) => {
-  // Make a POST request to the login endpoint with the provided data and get the response
   const response = await axios.post(`${API_URL}/login-admin`, data);
-
-  // Return the response data, which should contain token or user info
-  return response.data;
+  return response?.data; // Return the response data if available
 };
 
-// Export the login function to use in other parts of the application
-export default { login };
+// Register a new student with provided data and authorization headers
+const registerStudent = async (data, headers) => {
+  const response = await axios.post(`${API_URL}/register-student`, data, { headers });
+  return response?.data; // Return the response data if available
+};
+
+// Register a new admin with provided data and authorization headers
+const registerAdmin = async (data, headers) => {
+  const response = await axios.post(`${API_URL}/register-admin`, data, { headers });
+  return response?.data; // Return the response data if available
+};
+
+// Export all functions for use in other parts of the application
+export default { login, registerStudent, registerAdmin };

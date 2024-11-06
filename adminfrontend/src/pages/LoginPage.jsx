@@ -1,69 +1,82 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import authService from '../services/authService';
-import  { useState } from 'react';
-import { Container, TextField, Button, Box, Typography } from '@mui/material';
+import { Container, Box, Typography } from '@mui/material';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { fireToast } from '../components/fireToast';
+import Form from '../components/Form';
 
 const LoginPage = () => {
-  // State variables for email and password inputs
+  // State for storing email and password inputs
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { login, isAuthenticated } = useAuth(); // Destructuring login function and authentication status from context
-  const navigate = useNavigate(); // Hook to programmatically navigate between routes
   
-  // Function to handle login when the form is submitted
-  const handleLogin = async (event) => {
-    event.preventDefault(); // Prevent the default form submission behavior
-    const data = await authService.login({ email, password }); // Attempt to login with provided email and password
-    const token = data?.jwtToken; // Extract the JWT token from the response
-    login(token); // Call the login function from the context to save the token
+  // Get login function and authentication status from AuthContext
+  const { login, isAuthenticated } = useAuth();
+  
+  // useNavigate hook to programmatically navigate to other routes
+  const navigate = useNavigate();
 
-    navigate('/admin/register-user'); // Redirect to the register user page after successful login
+  // Function to handle form submission for login
+  const handleLogin = async (event) => {
+    event.preventDefault(); // Prevent page reload on form submission
+    try {
+      // Call the login function from authService with email and password
+      const data = await authService.login({ email, password });
+      const token = data?.jwtToken; // Extract JWT token from response
+      
+      // Use login function from AuthContext to store token in auth state
+      login(token);
+      
+      // Redirect to the student registration page upon successful login
+      navigate('/admin/register-student');
+      
+      // Display success toast message
+      fireToast("Logged in successfully", "success");
+    } catch (error) {
+      console.log(error); // Log any error to the console
+      
+      // Display error toast message if login fails
+      fireToast("Invalid credentials", "error");
+    }
   };
 
-  // Redirect if the user is already authenticated
-  if (isAuthenticated) {
-    navigate('/admin/register-user'); // If authenticated, navigate to the register user page
-  }
+  // Effect to automatically redirect if user is already authenticated
+  useEffect(() => { 
+    if (isAuthenticated) {
+      navigate('/admin/register-student'); // Redirect to registration if authenticated
+    }
+  }, [isAuthenticated, navigate]);
+
+  // Configuration for form fields passed to Form component
+  const formFields = [
+    { 
+      label: "Email", 
+      name: "email", 
+      type: "email", 
+      value: email, 
+      onChange: (e) => setEmail(e.target.value) // Update email state on change
+    },
+    { 
+      label: "Password", 
+      name: "password", 
+      type: "password", 
+      value: password, 
+      onChange: (e) => setPassword(e.target.value) // Update password state on change
+    },
+  ];
 
   return (
-    <Container maxWidth="xs"> {/* Container for the login form with a maximum width */}
-      <Box sx={{ mt: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}> {/* Flexbox layout for centering */}
-        <Typography component="h1" variant="h5">Admin Login</Typography> {/* Title of the login page */}
-        
-        <Box component="form" onSubmit={handleLogin} sx={{ mt: 1 }}> {/* Form for login submission */}
-          <TextField
-            variant="outlined" 
-            margin="normal" 
-            required 
-            fullWidth 
-            label="Email" 
-            type='email'
-            autoFocus 
-            value={email} 
-            onChange={(e) => setEmail(e.target.value)} 
-          />
-          <TextField
-            variant="outlined" 
-            margin="normal" 
-            required 
-            fullWidth 
-            label="Password" 
-            type="password" 
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <Button
-            type="submit" 
-            fullWidth 
-            variant="contained" 
-            color="primary" 
-            sx={{ mt: 3, mb: 2, py: 1.5 }} 
-          >
-            Sign In
-          </Button>
-        </Box>
+    // Centered container for login form
+    <Container maxWidth="xs">
+      <Box sx={{ mt: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        {/* Form component with title, fields, and submit handler */}
+        <Form 
+          title="Admin Login" 
+          buttonLabel="Sign In" 
+          fields={formFields} 
+          onSubmit={handleLogin} 
+        />
       </Box>
     </Container>
   );

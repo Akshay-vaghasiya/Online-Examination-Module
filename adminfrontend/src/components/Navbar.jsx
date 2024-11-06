@@ -8,79 +8,79 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Button } from '@mui/material';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import LogoutIcon from '@mui/icons-material/Logout';
 
-// Set drawer width for sidebar
+// Define the width of the sidebar (drawer)
 const drawerWidth = 240;
 
-// Style AppBar to adjust for sidebar toggle state
+// Styled AppBar component with dynamic width based on the sidebar state
 const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'isSidebarOpen',
+  shouldForwardProp: (prop) => prop !== 'isSidebarOpen', // Avoid passing 'isSidebarOpen' prop to the DOM
 })(({ theme, isSidebarOpen }) => ({
-  zIndex: theme.zIndex.drawer + 1,
+  zIndex: theme.zIndex.drawer + 1, // Ensure the AppBar is above the drawer
   transition: theme.transitions.create(['width', 'margin'], {
     easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
+    duration: theme.transitions.duration.leavingScreen, // Transition when sidebar closes
   }),
-  // Adjust width and margin when sidebar is open
   ...(isSidebarOpen && {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
+    marginLeft: drawerWidth, // Adjust the margin if the sidebar is open
+    width: `calc(100% - ${drawerWidth}px)`, // Reduce width when sidebar is open
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
+      duration: theme.transitions.duration.enteringScreen, // Transition when sidebar opens
     }),
   }),
 }));
 
-// Navbar component with sidebar toggle and logout functionality
+// Navbar component definition
 const Navbar = ({ isSidebarOpen, handleDrawerToggle }) => {
-  const { logout } = useAuth();  // Access logout function from Auth context
-  const navigate = useNavigate();  // Hook to navigate programmatically
-
-  // Handle logout and navigate to home page
+  const { logout } = useAuth(); // Get logout function from AuthContext
+  const navigate = useNavigate(); // For navigation after logout
+  
+  // Handle logout and navigate to the homepage
   const handleLogout = () => {
     logout();
-    navigate('/');
+    navigate('/'); // Redirect to the home page after logging out
   };
 
   return (
-    <AppBar position="fixed" isSidebarOpen={isSidebarOpen}>
+    <AppBar position="fixed" isSidebarOpen={isSidebarOpen}> {/* Custom AppBar with dynamic styling */}
       <Toolbar>
-        {/* Menu icon button to toggle sidebar */}
+        {/* IconButton for toggling the sidebar */}
         <IconButton
           color="inherit"
           aria-label="open drawer"
-          onClick={handleDrawerToggle}
+          onClick={handleDrawerToggle} // Call handleDrawerToggle to open/close sidebar
           edge="start"
-          sx={{ marginRight: 5, ...(isSidebarOpen && { display: 'none' }) }}
+          sx={{ marginRight: 5, ...(isSidebarOpen && { display: 'none' }) }} // Hide when sidebar is open
         >
-          <MenuIcon />
+          <MenuIcon /> {/* Menu icon for toggling sidebar */}
         </IconButton>
         
-        {/* Title text */}
+        {/* Application title */}
         <Typography variant="h6" noWrap>
-          Mini variant drawer
+          Roima Intelligence
         </Typography>
 
-        {/* Logout button styled with custom colors and positioned to the right */}
-        <Button 
-          variant='text' 
-          sx={{ 
-            backgroundColor: '#3f51b5',
-            color: '#ffffff',
+        {/* Logout button with custom styling */}
+        <Button
+          variant="text"
+          sx={{
+            backgroundColor: '#3f51b5', // Primary color for the button
+            color: '#ffffff', // White text color
             '&:hover': {
-              backgroundColor: '#303f9f',
+              backgroundColor: '#303f9f', // Darken color on hover
             },
             padding: '8px 16px',
-            marginLeft: 'auto',
-          }}  
-          onClick={handleLogout}
+            marginLeft: 'auto', // Push logout button to the right
+          }}
+          onClick={handleLogout} // Trigger logout on click
         >
-          Logout
+          Logout <LogoutIcon /> {/* Logout icon alongside text */}
         </Button>
       </Toolbar>
     </AppBar>
   );
-};
+}
 
-export default Navbar;
+export default Navbar; 

@@ -63,7 +63,7 @@ const Sidebar = ({ isOpen, onClose, selectedIndex, onItemClick }) => {
 
   // Define menu items with icons and links for navigation
   const menuItems = [
-    { text: 'User Register', icon: <PersonAdd />, link: '/admin/register-user' },
+    { text: 'Student Register', icon: <PersonAdd />, link: '/admin/register-student' },
     { text: 'Questions', icon: <Quiz />, link: '/admin/questions' },
     { text: 'Exams', icon: <Description />, link: '/admin/exams' },
   ];
