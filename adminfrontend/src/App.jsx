@@ -3,6 +3,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import DashboardLayout from './components/DashboardLayout';
 import LoginPage from './pages/LoginPage';
 import RegisterStudent from './pages/RegisterStudent';
+import RegisterAdmin from './pages/RegisterAdmin';
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
         <Route element={<ProtectedRoute />}>
           <Route path='/admin' element={<DashboardLayout />}>
             <Route path="register-student" element={<RegisterStudent />} />
+            <Route path='register-admin' element={<RegisterAdmin />} />
           </Route>
         </Route>
       </Routes>
