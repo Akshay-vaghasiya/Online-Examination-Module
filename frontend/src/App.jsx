@@ -1,12 +1,27 @@
 import './App.css'
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import LoginPage from './pages/LoginPage';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
+import ProtectedRoute from './components/ProtectedRoute';
+import Layout from './components/Layout';
 const App = () => {
-
+  const Exams = () => <Typography variant="h4">Exams Content</Typography>;
   return (
-    <>
-      <h1 className="text-3xl font-bold underline">
-      Hello world!
-      </h1>
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />    
+
+
+        <Route element={<ProtectedRoute />}>
+          <Route path='/student' element={<Layout />}>
+            <Route path="exams" element={<Exams />} />
+          </Route>
+        </Route>
+      </Routes>
+    </Router>
   )
 }
 
