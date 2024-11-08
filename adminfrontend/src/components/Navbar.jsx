@@ -9,6 +9,7 @@ import { Button } from '@mui/material';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { fireToast } from './fireToast';
 
 // Define the width of the sidebar (drawer)
 const drawerWidth = 240;
@@ -39,6 +40,7 @@ const Navbar = ({ isSidebarOpen, handleDrawerToggle }) => {
   
   // Handle logout and navigate to the homepage
   const handleLogout = () => {
+    fireToast("Logged out successfully", "success");
     logout();
     navigate('/'); // Redirect to the home page after logging out
   };
@@ -75,8 +77,9 @@ const Navbar = ({ isSidebarOpen, handleDrawerToggle }) => {
             marginLeft: 'auto', // Push logout button to the right
           }}
           onClick={handleLogout} // Trigger logout on click
+          startIcon={<LogoutIcon />}
         >
-          Logout <LogoutIcon /> {/* Logout icon alongside text */}
+          Logout
         </Button>
       </Toolbar>
     </AppBar>

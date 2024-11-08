@@ -2,6 +2,7 @@ package com.example.backend.Controller;
 
 import com.example.backend.Dto.JwtRequest;
 import com.example.backend.Dto.RegisterRequest;
+import com.example.backend.Dto.ResetPasswordRequest;
 import com.example.backend.Entity.User;
 import com.example.backend.Service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,9 +75,9 @@ public class AuthController {
     /* Initiates the password reset process by generating a token and sending it to the user's email address.
 
      param email - The email address of the user requesting password reset.
-     return - A string message indicating the status of the password reset request. */
+     return - ResponseEntity with message if successful or fail. */
     @PostMapping("/forgot-password")
-    public String forgotPassword(@RequestParam("email") String email) {
+    public ResponseEntity<?> forgotPassword(@RequestParam("email") String email) {
         return authService.forgotPassword(email);
     }
 
@@ -84,10 +85,10 @@ public class AuthController {
 
      param token - The password reset token received by the user.
      param newPassword - The new password to be set for the user.
-     return - A string message indicating the result of the password reset operation. */
+     return - ResponseEntity with message if successful or fail. */
     @PostMapping("/reset-password")
-    public String resetPassword(@RequestParam("token") String token, @RequestParam("newPassword") String newPassword) {
-        return authService.resetPassword(token, newPassword);
+    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest request) {
+        return authService.resetPassword(request);
     }
 }
 

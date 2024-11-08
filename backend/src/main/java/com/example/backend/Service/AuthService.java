@@ -3,6 +3,7 @@ package com.example.backend.Service;
 import com.example.backend.Dto.JwtRequest;
 import com.example.backend.Dto.JwtResponse;
 import com.example.backend.Dto.RegisterRequest;
+import com.example.backend.Dto.ResetPasswordRequest;
 import com.example.backend.Entity.PasswordResetToken;
 import com.example.backend.Entity.University;
 import com.example.backend.Entity.User;
@@ -109,16 +110,18 @@ public class AuthService {
 
      param email - The email address of the user requesting password reset.
      return - String message indicating whether the password reset email was sent. */
-    public String forgotPassword(String email) {
+    public ResponseEntity<?> forgotPassword(String email)
+    {
         User user = userService.findUserByEmail(email);
         if (user == null) {
-            return "No user found with this email";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No user found with this email");
         }
 
-        String token = createPasswordResetToken(user); // Generates reset token
-        emailService.sendPasswordResetEmail(user.getEmail(), token); // Sends email with token
+        String token = createPasswordResetToken(user);
+        emailService.sendPasswordResetEmail(user.getEmail(), token);
 
-        return "Password reset email sent";
+        return ResponseEntity.ok("Password reset email sent");
+
     }
 
     /* Generates a new password reset token for the specified user and saves it in the database with an expiry date.
@@ -136,22 +139,22 @@ public class AuthService {
 
     /* Resets the user's password if the provided token is valid and not expired.
 
-     param token - The password reset token.
-     param newPassword - The new password to be set.
+     param request - Contains reset password credentials such as token and newPassword
      return - String message indicating the success or failure of the reset process. */
-    public String resetPassword(String token, String newPassword) {
-        PasswordResetToken resetToken = tokenRepository.findByToken(token);
+    public ResponseEntity<?> resetPassword(ResetPasswordRequest request)
+    {
+        PasswordResetToken resetToken = tokenRepository.findByToken(request.getToken());
 
         if (resetToken == null || isTokenExpired(resetToken)) {
-            return "Invalid or expired token";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid token or password reset failed");
         }
 
         User user = resetToken.getUser();
-        user.setPassword(encoder.encode(newPassword));
+        user.setPassword(encoder.encode(request.getNewPassword()));
         userService.saveUser(user);
         tokenRepository.delete(resetToken);
 
-        return "Password successfully reset";
+        return ResponseEntity.ok("Password reset successful");
     }
 
     /* Checks if the provided PasswordResetToken is expired.

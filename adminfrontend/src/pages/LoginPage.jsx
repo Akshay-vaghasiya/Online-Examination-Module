@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import authService from '../services/authService';
 import { Container, Box, Typography } from '@mui/material';
 import { useAuth } from '../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { fireToast } from '../components/fireToast';
 import Form from '../components/Form';
 
@@ -76,7 +76,16 @@ const LoginPage = () => {
           buttonLabel="Sign In" 
           fields={formFields} 
           onSubmit={handleLogin} 
-        />
+        >
+          {/* Additional content or links can be added here */}
+          <Box sx={{ mt: 2, textAlign: "right" }}>
+            <Link to="/forgot-password" style={{ textDecoration: "none" }}>
+              <Typography variant="body2" color="primary">
+                Forgot Password?
+              </Typography>
+            </Link>
+          </Box>
+        </Form>
       </Box>
     </Container>
   );

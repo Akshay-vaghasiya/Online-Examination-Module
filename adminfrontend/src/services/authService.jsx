@@ -23,5 +23,17 @@ const registerAdmin = async (data, headers) => {
   return response?.data; // Return the response data if available
 };
 
+// Send forgot password request with provided email
+const forgotPassword = async (data) => {
+  const response = await axios.post(`${API_URL}/forgot-password?email=${data.email}`);
+  return response?.data;
+};
+
+// Send reset password request with provided data
+const resetPassword = async (data) => {
+  const response = await axios.post(`${API_URL}/reset-password`, data);
+  return response?.data;
+};
+
 // Export all functions for use in other parts of the application
-export default { login, registerStudent, registerAdmin };
+export default { login, registerStudent, registerAdmin, forgotPassword, resetPassword };

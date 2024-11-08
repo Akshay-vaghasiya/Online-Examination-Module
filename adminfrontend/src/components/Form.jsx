@@ -8,7 +8,7 @@ const Form = ({ title, buttonLabel, fields, onSubmit, children }) => {
     <Box component="form" onSubmit={onSubmit} sx={{ maxWidth: 400, mx: "auto", mt: 4 }}>
       
       {/* Form title */}
-      <Typography variant="h4" component="h1" gutterBottom>
+      <Typography variant="h4" component="h1" gutterBottom align="center">
         {title}
       </Typography>
       
