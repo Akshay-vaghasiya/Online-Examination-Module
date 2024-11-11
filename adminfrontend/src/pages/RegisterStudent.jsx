@@ -3,11 +3,11 @@ import AuthHeader from "../Helper/AuthHeader";
 import { fireToast } from "../components/fireToast";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import AddUniversityDialog from "../components/AddUniversityDialog";
 import UniversityAutocomplete from "../components/UniversityAutocomplete";
 import Form from "../components/Form";
 import universityService from "../services/universityService";
 import authService from "../services/authService";
+import CustomDialogForm from "../components/CustomDialogForm";
 
 const RegisterStudent = () => {
   const [universities, setUniversities] = useState([]);  // State to store universities list
@@ -113,6 +113,15 @@ const RegisterStudent = () => {
     { label: "Email", name: "email", type: "email", required: true },
     { label: "Password", name: "password", type: "password", required: true },
   ];
+ 
+  // University field configurations
+  const universityFields = [
+    { label: "University Name", name: "universityName", required: true },
+    { label: "Address", name: "address" },
+    { label: "Contact Email", name: "contactEmail", type: "email" },
+    { label: "Contact Phone", name: "contactPhone" },
+    { label: "Website URL", name: "websiteUrl" },
+  ];
 
   return (
     <Form
@@ -129,12 +138,15 @@ const RegisterStudent = () => {
       />
 
       {/* Dialog for adding new university */}
-      <AddUniversityDialog
+      <CustomDialogForm
         open={openDialog}
-        onClose={() => setOpenDialog(false)}  // Close dialog
-        newUniversity={newUniversity}  // New university data
-        setNewUniversity={setNewUniversity}  // Update new university data
-        onAddUniversity={handleAddUniversity}  // Handle university addition
+        onClose={setOpenDialog}
+        formData={newUniversity}
+        setFormData={setNewUniversity}
+        onSubmit={handleAddUniversity}
+        title="Add University"
+        submitButtonText="Add"
+        fields={universityFields}
       />
     </Form>
   );
