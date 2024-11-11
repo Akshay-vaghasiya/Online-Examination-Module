@@ -5,6 +5,7 @@ import App from './App';
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import { AuthProvider } from '../src/contexts/AuthContext';
 import { ToastContainer } from 'react-toastify';
+import { UserProvider } from './contexts/UserContext';
 
 // Creating a theme for the Material-UI components
 const theme = createTheme();
@@ -13,10 +14,12 @@ const theme = createTheme();
 createRoot(document.getElementById('root')).render(
   <StrictMode> {/* Enabling StrictMode for detecting issues */}
     <AuthProvider> {/* Providing authentication context to the application */}
-      <ThemeProvider theme={theme}> {/* Applying the created theme to the application */}
-        <CssBaseline /> {/* Normalize CSS styles across browsers */}
-        <App />
-      </ThemeProvider>
+      <UserProvider> {/* Providing user context to the application */}
+        <ThemeProvider theme={theme}> {/* Applying the created theme to the application */}
+          <CssBaseline /> {/* Normalize CSS styles across browsers */}
+          <App />
+        </ThemeProvider>
+      </UserProvider>
     </AuthProvider>
     <ToastContainer /> {/* Configures toast notifications to display messages throughout the app */}
   </StrictMode>,
