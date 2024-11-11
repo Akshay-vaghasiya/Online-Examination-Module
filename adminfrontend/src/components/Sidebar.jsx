@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
@@ -9,7 +9,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import { Description, PeopleAlt, PersonAdd, Quiz } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
@@ -61,6 +61,8 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'isOpen
 const Sidebar = ({ isOpen, onClose, selectedIndex, onItemClick }) => {
   const theme = useTheme(); // Access the theme for dynamic styling
 
+  const location = useLocation();
+
   // Define menu items with icons and links for navigation
   const menuItems = [
     { text: 'Student Register', icon: <PersonAdd />, link: '/admin/register-student' },
@@ -69,6 +71,13 @@ const Sidebar = ({ isOpen, onClose, selectedIndex, onItemClick }) => {
     { text: 'Questions', icon: <Quiz />, link: '/admin/questions' },
     { text: 'Exams', icon: <Description />, link: '/admin/exams' },
   ];
+
+  useEffect(() => {
+    const index = menuItems.findIndex((item) => item.link === location.pathname);
+    if (index !== -1) {
+      onItemClick(index);
+    }
+  }, [location]);
 
   return (
     <Drawer variant="permanent" isOpen={isOpen}>

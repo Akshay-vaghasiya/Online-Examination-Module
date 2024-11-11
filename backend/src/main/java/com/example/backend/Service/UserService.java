@@ -107,7 +107,6 @@ public class UserService {
     public ResponseEntity<?> updateUser(long id, UpdateUserRequest updateUserRequest) {
         try {
             Optional<User> optionalUser = userRepository.findById(id);
-
             if (optionalUser.isPresent()) {
                 User user = optionalUser.get();
 
@@ -120,7 +119,7 @@ public class UserService {
                 if (updateUserRequest.getRole() != null && !user.getRole().equals(updateUserRequest.getRole())) {
                     user.setRole(updateUserRequest.getRole());
                 }
-                if (updateUserRequest.getUniversity() != null &&
+                if (updateUserRequest.getUniversity() != null && !updateUserRequest.getUniversity().isEmpty() &&
                         (user.getUniversity() == null || !user.getUniversity().getUniversityName().equals(updateUserRequest.getUniversity()))) {
 
                     University university = universityService.getUniversityByName(updateUserRequest.getUniversity());

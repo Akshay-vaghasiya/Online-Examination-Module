@@ -4,40 +4,44 @@ import {
     TableHead, TableRow, Paper, Button
 } from "@mui/material";
 
-// TableComponent is a reusable component that renders a table with customizable columns,
-// data, and action buttons for each row.
+// TableComponent: A reusable component to display data in a Material UI Table
 const TableComponent = ({ columns, data, actions }) => (
-    <TableContainer component={Paper}> {/* Paper provides elevation to the table */}
+    <TableContainer component={Paper}>
+        {/* The main table structure */}
         <Table aria-label="custom table">
-            <TableHead> {/* Header row for table columns */}
+            <TableHead>
                 <TableRow>
+                    {/* Rendering column headers dynamically */}
                     {columns.map((col) => (
-                        <TableCell key={col}><strong>{col}</strong></TableCell> 
+                        <TableCell key={col}><strong>{col}</strong></TableCell>
                     ))}
-                    {actions && <TableCell><strong>Actions</strong></TableCell>} {/* Action header if actions are provided */}
+                    {/* If actions are provided, render an additional column for actions */}
+                    {actions && <TableCell><strong>Actions</strong></TableCell>}
                 </TableRow>
             </TableHead>
             <TableBody>
-                {/* Check if there is data to display */}
+                {/* Check if data is available */}
                 {data.length > 0 ? (
-                    data.map((row, index) => (  // Map over each row of data
+                    // Loop through each data row
+                    data.map((row, index) => (
                         <TableRow key={index}>
-                            {/* Render each cell based on column names */}
+                            {/* Dynamically render data for each row */}
                             {columns.map((col) => (
                                 <TableCell key={col}>{row[col.toLowerCase()]}</TableCell>
                             ))}
-                            {actions && ( // Render action buttons if actions are provided
-                                <TableCell sx={{ display: 'flex', gap: '10px' }}>
+                            {/* If actions are provided, render action buttons */}
+                            {actions && (
+                                <TableCell sx={{ display: 'flex', gap: '10px'}}>
                                     {actions.map((action, i) => (
                                         <Button
                                             key={i}
                                             variant="contained"
-                                            color={action.color} // Button color
-                                            onClick={() => action.handler(row)} // Action handler
-                                            style={{ marginLeft: i > 0 ? "0.5rem" : 0 }}
-                                            startIcon={action?.icon} // Optional icon
+                                            color={action.color}
+                                            onClick={() => action.handler(row)} // Pass the current row to the action handler
+                                            style={{ marginLeft: i > 0 ? "0.5rem" : 0 }} // Add margin for multiple actions
+                                            startIcon={action?.icon} // Optional icon for the action button
                                         >
-                                            {action.label} {/* Button label */}
+                                            {action.label} {/* Label for the action button */}
                                         </Button>
                                     ))}
                                 </TableCell>
@@ -45,7 +49,7 @@ const TableComponent = ({ columns, data, actions }) => (
                         </TableRow>
                     ))
                 ) : (
-                    // Display message if no data is available
+                    // If no data is available, display a "No data found" message
                     <TableRow>
                         <TableCell colSpan={columns.length + 1} align="center">
                             No data found.

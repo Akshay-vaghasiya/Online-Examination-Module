@@ -22,18 +22,18 @@ const initialState = {
 const UserProvider = ({ children }) => {
     // Set up reducer for managing state and actions
     const [state, dispatch] = useReducer(reducer, initialState);
-    const { getAllUers, deleteuser, updateuser } = userService; // Destructure user service functions
+    const { getAllUsers, deleteuser, updateuser } = userService; // Destructure user service functions
     const headers = AuthHeader(); // Get authorization headers
     const { logout } = useAuth(); // Use authentication context
 
     // Fetch all users and handle unauthorized errors
     const getUsers = async (navigate) => {
         dispatch({ type: "SET_LOADING" });
-        try {
-            const data = await getAllUers(headers);
+        try {     
+            const data = await getAllUsers(headers);
             dispatch({ type: "FETCH_USERS_SUCCESS", payload: data });
         } catch (error) {
-            if (error.response.status === 401 || error.response.status === 403) {
+            if (error.response?.status === 401 || error.response?.status === 403) {
                 logout();
                 navigate("/");  // Redirect to login on unauthorized error
             }

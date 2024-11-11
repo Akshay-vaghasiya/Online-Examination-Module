@@ -55,4 +55,14 @@ public class UpdateUserRequest {
     public void setUniversity(String university) {
         this.university = university;
     }
+
+    @Override
+    public String toString() {
+        return "UpdateUserRequest{" +
+                "username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", role=" + role +
+                ", university='" + university + '\'' +
+                '}';
+    }
 }

@@ -11,7 +11,7 @@ const reducer = (state, action) => {
 
         // Store fetched users in state, set loading to false, and reset filtered users
         case "FETCH_USERS_SUCCESS":
-            return { ...state, isLoading: false, users: action.payload, filteredUsers: action.payload };
+            return { ...state, isLoading: false, isError: false, users: action.payload, filteredUsers: action.payload };
 
         // Filter users based on search term (username, email, university, or role)
         case "SEARCH_USERS":

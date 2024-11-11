@@ -6,6 +6,7 @@ import RegisterStudent from './pages/RegisterStudent';
 import RegisterAdmin from './pages/RegisterAdmin';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
+import UserManagement from './pages/UserManagement';
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
           <Route path='/admin' element={<DashboardLayout />}>
             <Route path="register-student" element={<RegisterStudent />} />
             <Route path='register-admin' element={<RegisterAdmin />} />
+            <Route path='user-management' element={<UserManagement />} />
           </Route>
         </Route>
       </Routes>

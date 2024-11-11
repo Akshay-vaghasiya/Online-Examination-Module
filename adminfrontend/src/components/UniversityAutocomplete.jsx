@@ -2,10 +2,10 @@ import React from "react";
 import { Autocomplete, TextField } from "@mui/material";
 
 // Autocomplete component for selecting or adding a new university
-const UniversityAutocomplete = ({ universities, selectedUniversity, onUniversityChange }) => (
+const UniversityAutocomplete = ({ universities, value, onUniversityChange }) => (
   <Autocomplete
     // Selected university value
-    value={selectedUniversity}
+    value={value}
     // Callback for when an option is selected or input changes
     onChange={onUniversityChange}
     // List of university options for autocomplete
