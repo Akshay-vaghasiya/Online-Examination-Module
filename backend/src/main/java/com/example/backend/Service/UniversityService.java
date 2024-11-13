@@ -1,7 +1,9 @@
 package com.example.backend.Service;
 
 import com.example.backend.Entity.University;
+import com.example.backend.Entity.User;
 import com.example.backend.Repository.UniversityRepository;
+import com.example.backend.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,10 @@ public class UniversityService {
     // Injects an instance of UniversityRepository for database operations
     @Autowired
     private UniversityRepository universityRepository;
+
+    // Injects an instance of UserRepository for database operations
+    @Autowired
+    private UserRepository userRepository;
 
     /* Saves a new university or updates an existing university in the database.
 
@@ -90,6 +96,16 @@ public class UniversityService {
     public ResponseEntity<?> deleteUniversity(long universityId) {
         try {
             if (universityRepository.existsById(universityId)) {
+
+                University university = universityRepository.findById(universityId).get();
+                List<User> users = userRepository.findAll();
+
+                for(User user : users){
+                    if(user.getUniversity() == university){
+                        user.setUniversity(null);
+                        userRepository.save(user);
+                    }
+                }
                 universityRepository.deleteById(universityId);
                 return ResponseEntity.ok("University deleted successfully.");
             } else {
