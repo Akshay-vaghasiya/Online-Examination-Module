@@ -5,7 +5,7 @@ import {
 } from "@mui/material";
 
 // TableComponent: A reusable component to display data in a Material UI Table
-const TableComponent = ({ columns, data, actions }) => (
+const TableComponent = ({ columns, data, actions, datacolumns }) => (
     <TableContainer component={Paper}>
         {/* The main table structure */}
         <Table aria-label="custom table">
@@ -26,8 +26,8 @@ const TableComponent = ({ columns, data, actions }) => (
                     data.map((row, index) => (
                         <TableRow key={index}>
                             {/* Dynamically render data for each row */}
-                            {columns.map((col) => (
-                                <TableCell key={col}>{row[col.toLowerCase()]}</TableCell>
+                            {datacolumns.map((col) => (
+                                <TableCell key={col}>{row[col]}</TableCell>
                             ))}
                             {/* If actions are provided, render action buttons */}
                             {actions && (

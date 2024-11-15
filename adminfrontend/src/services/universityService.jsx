@@ -15,5 +15,17 @@ const registerUniversity = async (data, headers) => {
   return response?.data; // Return the data from the server response
 };
 
+// Delete a university by ID, sending the request with authorization headers
+const deleteUniversity = async (id, headers) => {
+  const response = await axios.delete(`${API_URL}/delete-university/${id}`, {headers});
+  return response.data; // Return the data from the server response
+}
+
+// Update a university's information by ID, sending the data and authorization headers
+const updateUniversity = async (id, data, headers) => {
+  const response = await axios.put(`${API_URL}/update-university/${id}`, data, {headers});
+  return response.data; // Return the data from the server response
+}
+
 // Export both functions to be used elsewhere in the application
-export default { getAllUniversities, registerUniversity };
+export default { getAllUniversities, registerUniversity, deleteUniversity, updateUniversity };

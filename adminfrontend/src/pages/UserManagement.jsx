@@ -116,6 +116,8 @@ const UserManagement = () => {
 
   // Define table columns and row actions for user management table
   const columns = ["UserID", "Username", "Email", "Role", "University"];
+  // Define data columns name for the table
+  const datacolumns = ["userid", "username", "email", "role", "university"];
   const actions = [
     {
       label: "Update Profile",
@@ -183,6 +185,7 @@ const UserManagement = () => {
         columns={columns}
         data={filteredUsers}
         actions={actions}
+        datacolumns={datacolumns}
       />
 
       {/* Dialog form for updating user profile */}

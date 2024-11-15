@@ -8,7 +8,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import { Description, PeopleAlt, PersonAdd, Quiz } from '@mui/icons-material';
+import { Description, PeopleAlt, PersonAdd, Quiz, School } from '@mui/icons-material';
 import { Link, useLocation } from 'react-router-dom';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -68,6 +68,7 @@ const Sidebar = ({ isOpen, onClose, selectedIndex, onItemClick }) => {
     { text: 'Student Register', icon: <PersonAdd />, link: '/admin/register-student' },
     { text: 'Admin Register', icon: <PersonAdd />, link: '/admin/register-admin' },
     { text: 'User Management', icon: <PeopleAlt />, link: '/admin/user-management' },
+    { text: 'University Management', icon: <School />, link: '/admin/university-management' },
     { text: 'Questions', icon: <Quiz />, link: '/admin/questions' },
     { text: 'Exams', icon: <Description />, link: '/admin/exams' },
   ];
