@@ -3,7 +3,8 @@ package com.example.backend.Entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /* The McqQuestion class represents an entity for storing multiple-choice questions (MCQs) in the database.
    It contains information about the question's text, difficulty level, category, and associated options.
@@ -18,7 +19,7 @@ import java.util.List;
   - questionText: Stores the text of the MCQ question. This field is mandatory and can store long text.
   - difficultyLevel: Stores the difficulty level of the question (e.g., "Easy", "Medium", "Hard"). This is mandatory.
   - category: Stores the category of the question (e.g., "Programming", "Technical", "Aptitude"). This is mandatory.
-  - options: Represents a list of possible answer options associated with the question. This field establishes
+  - options: Represents a set of possible answer options associated with the question. This field establishes
     a one-to-many relationship with the McqOption entity. */
 @Entity
 @Table(name = "mcq_questions")
@@ -38,7 +39,7 @@ public class McqQuestion {
 
     @OneToMany(mappedBy = "mcqQuestion", cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<McqOption> options;
+    private Set<McqOption> options = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -72,11 +73,11 @@ public class McqQuestion {
         this.category = category;
     }
 
-    public List<McqOption> getOptions() {
+    public Set<McqOption> getOptions() {
         return options;
     }
 
-    public void setOptions(List<McqOption> options) {
+    public void setOptions(Set<McqOption> options) {
         this.options = options;
     }
 
