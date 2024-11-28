@@ -8,8 +8,8 @@ import java.util.Set;
 
 /* The CodingQuestion class represents an entity for storing coding-related questions in the database.
    It contains essential details about the question, including its text, title, difficulty level, category,
-   function signature, and associated test cases. This class is designed to store programming questions
-   that require the user to write code to solve a problem.
+   function signature, the correct solution code, and associated test cases. This class is designed to store
+   programming questions that require the user to write code to solve a problem.
 
  * Purpose:
   * This class defines the "coding_questions" table in the database and serves as the blueprint for storing
@@ -23,6 +23,8 @@ import java.util.Set;
   - difficultyLevel: Stores the difficulty level of the question (e.g., "Easy", "Medium", "Hard"). This is a mandatory field.
   - category: Represents the category of the coding question (e.g., "Algorithms", "Data Structures", "Mathematics"). This is mandatory.
   - functionSignature: Stores the function signature or method header that the user must implement. This is mandatory.
+  - correctCode: Stores the correct solution code for the coding question. This code is used internally for validation
+    and reference purposes. It is mandatory and can accommodate long text.
   - testCases: Represents a collection of test cases associated with the coding question. This field establishes
     a one-to-many relationship with the CodingTestCase entity. Each coding question can have multiple test cases,
     and each test case has input data and expected output that are used to validate user submissions. */
@@ -47,6 +49,9 @@ public class CodingQuestion {
 
     @Column(name = "function_signature")
     private String functionSignature;
+
+    @Column(name = "correct-code", nullable = false, length = 900000)
+    private String correctCode;
 
     @OneToMany(mappedBy = "codingQuestion", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
@@ -106,5 +111,13 @@ public class CodingQuestion {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getCorrectCode() {
+        return correctCode;
+    }
+
+    public void setCorrectCode(String correctCode) {
+        this.correctCode = correctCode;
     }
 }
