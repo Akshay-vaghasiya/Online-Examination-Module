@@ -14,19 +14,20 @@ const theme = createTheme();
 
 // Rendering the application into the DOM
 createRoot(document.getElementById('root')).render(
-  <StrictMode> {/* Enabling StrictMode for detecting issues */}
-    <AuthProvider> {/* Providing authentication context to the application */}
-      <UniversityProvider> {/* Providing university context to the application */}
-        <QuestionProvider> {/* Providing question context to the application */}
-          <UserProvider> {/* Providing user context to the application */}
-            <ThemeProvider theme={theme}> {/* Applying the created theme to the application */}
-              <CssBaseline /> {/* Normalize CSS styles across browsers */}
-              <App />
-            </ThemeProvider>
-          </UserProvider>
-        </QuestionProvider>
-      </UniversityProvider>
-    </AuthProvider>
-    <ToastContainer /> {/* Configures toast notifications to display messages throughout the app */}
-  </StrictMode>,
+    <>
+      <AuthProvider> {/* Providing authentication context to the application */}
+        <UniversityProvider> {/* Providing university context to the application */}
+          <QuestionProvider> {/* Providing question context to the application */}
+            <UserProvider> {/* Providing user context to the application */}
+              <ThemeProvider theme={theme}> {/* Applying the created theme to the application */}
+                <CssBaseline /> {/* Normalize CSS styles across browsers */}
+                <App />
+              </ThemeProvider>
+            </UserProvider>
+          </QuestionProvider>
+        </UniversityProvider>
+      </AuthProvider>
+      <ToastContainer /> {/* Configures toast notifications to display messages throughout the app */}
+    </>
+  
 );

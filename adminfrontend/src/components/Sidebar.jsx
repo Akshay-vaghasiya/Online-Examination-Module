@@ -69,7 +69,7 @@ const Sidebar = ({ isOpen, onClose, selectedIndex, onItemClick }) => {
     { text: 'Admin Register', icon: <PersonAdd />, link: '/admin/register-admin' },
     { text: 'User Management', icon: <PeopleAlt />, link: '/admin/user-management' },
     { text: 'University Management', icon: <School />, link: '/admin/university-management' },
-    { text: 'Questions', icon: <Quiz />, link: '/admin/questions' },
+    { text: 'Questions Management', icon: <Quiz />, link: '/admin/questions' },
     { text: 'Exams', icon: <Description />, link: '/admin/exams' },
   ];
 
