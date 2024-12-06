@@ -4,15 +4,22 @@ import com.example.backend.Entity.CodingQuestion;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /* Repository interface for accessing and managing CodingQuestion entities in the database.
 
  * This interface extends JpaRepository to provide CRUD operations and additional methods specific to
-   the CodingQuestion entity. It facilitates data retrieval and manipulation related to coding questions,
-   such as saving, updating, and deleting questions from the database.
+   CodingQuestion. It allows seamless interaction with the underlying database, enabling operations
+   such as saving, finding, updating, and deleting coding questions.
 
- * By extending JpaRepository, this interface inherits various generic methods for data access, including
-   save, findById, findAll, delete, etc., and can be used to perform operations on the "coding_questions" table. */
+ * Methods:
+   - findByCategoryAndDifficultyLevel(String category, String difficultyLevel): Retrieves a list of CodingQuestion
+     entities based on the specified category and difficulty level.
+
+ * By extending JpaRepository, this interface also inherits various generic methods for data access
+   and manipulation, such as save, findById, findAll, delete, etc. */
 @Repository
 public interface CodingQuestionRepository extends JpaRepository<CodingQuestion, Long> {
-}
 
+    List<CodingQuestion> findByCategoryAndDifficultyLevel(String category, String difficultyLevel);
+}
