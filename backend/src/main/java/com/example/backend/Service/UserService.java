@@ -48,6 +48,8 @@ public class UserService {
                 userResponse.setRole(user.getRole());
                 userResponse.setEmail(user.getEmail());
                 userResponse.setUsername(user.getUsername());
+                userResponse.setBranch(user.getBranch());
+                userResponse.setSemester(user.getSemester());
                 if (user.getUniversity() != null) {
                     userResponse.setUniversity(user.getUniversity().getUniversityName());
                 }
@@ -113,13 +115,19 @@ public class UserService {
                 if (updateUserRequest.getEmail() != null && !user.getEmail().equals(updateUserRequest.getEmail())) {
                     user.setEmail(updateUserRequest.getEmail());
                 }
+                if (updateUserRequest.getBranch() != null && !user.getBranch().equals(updateUserRequest.getBranch())) {
+                    user.setBranch(updateUserRequest.getBranch());
+                }
+                if (updateUserRequest.getSemester() <= 8 && updateUserRequest.getSemester() >= 1 && user.getSemester() != updateUserRequest.getSemester()) {
+                    user.setSemester(updateUserRequest.getSemester());
+                }
                 if (updateUserRequest.getUsername() != null && !user.getUsername().equals(updateUserRequest.getUsername())) {
                     user.setUsername(updateUserRequest.getUsername());
                 }
                 if (updateUserRequest.getRole() != null && !user.getRole().equals(updateUserRequest.getRole())) {
                     user.setRole(updateUserRequest.getRole());
                 }
-                if (updateUserRequest.getUniversity() != null && !updateUserRequest.getUniversity().isEmpty() &&
+                if (updateUserRequest.getRole() == User.Role.STUDENT && updateUserRequest.getUniversity() != null && !updateUserRequest.getUniversity().isEmpty() &&
                         (user.getUniversity() == null || !user.getUniversity().getUniversityName().equals(updateUserRequest.getUniversity()))) {
 
                     University university = universityService.getUniversityByName(updateUserRequest.getUniversity());
@@ -137,6 +145,8 @@ public class UserService {
                 updatedUser.setUsername(user.getUsername());
                 updatedUser.setRole(user.getRole());
                 updatedUser.setEmail(user.getEmail());
+                updatedUser.setSemester(user.getSemester());
+                updatedUser.setBranch(user.getBranch());
                 return ResponseEntity.ok(updatedUser);
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");

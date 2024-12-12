@@ -8,9 +8,10 @@ import Form from "../components/Form";
 import universityService from "../services/universityService";
 import authService from "../services/authService";
 import CustomDialogForm from "../components/CustomDialogForm";
+import { useUniversityContext } from "../contexts/UniversityContext";
 
 const RegisterStudent = () => {
-  const [universities, setUniversities] = useState([]);  // State to store universities list
+  const [universities1, setUniversities] = useState([]);  // State to store universities list
   const [selectedUniversity, setSelectedUniversity] = useState(null);  // State for selected university
   const [openDialog, setOpenDialog] = useState(false);  // Dialog state for adding a new university
   const [newUniversity, setNewUniversity] = useState({  // State for new university data
@@ -26,26 +27,23 @@ const RegisterStudent = () => {
   const { logout } = useAuth();  // Logout function from AuthContext
   const { getAllUniversities, registerUniversity } = universityService;  // University service methods
   const { registerStudent } = authService;  // Auth service method to register a student
+  const {universities, fetchUniversities} = useUniversityContext(); // University context
 
-  // Fetch list of universities on component mount
+  // Fetch list of universities if universities list is empty on component mount
   useEffect(() => {
-    fetchUniversities();
+    if (universities.length === 0) {
+      fetchUniversities();
+    }
   }, []);
 
-  // Function to fetch universities
-  const fetchUniversities = async () => {
-    try {
-      const response = await getAllUniversities(headers);  // Call to get all universities
-      const universityNames = response?.map((university) => university.universityName);  // Extract names
-      setUniversities(universityNames);  // Update universities state
-    } catch (error) {
-      if (error.response.status === 401 || error.response.status === 403) {  // Handle unauthorized and resource access error
-        logout();
-        navigate("/");  
-      }
-      fireToast("Error fetching universities " + error.message, "error");  // Show error message
-    }
-  };
+  // Extract university names from universities list
+  useEffect(() => { 
+    const universityNames = universities?.map(
+      (university) => university.universityName
+    );
+      
+    setUniversities(universityNames);
+  }, [universities]);
 
   // Handle university selection or creation
   const handleUniversityChange = (event, value) => {
@@ -93,6 +91,8 @@ const RegisterStudent = () => {
       email: e.target.email.value,
       password: e.target.password.value,
       university: selectedUniversity,
+      branch: e.target.branch.value,
+      semester: e.target.semester.value,
     };
 
     try {
@@ -112,6 +112,8 @@ const RegisterStudent = () => {
     { label: "Username", name: "username", required: true },
     { label: "Email", name: "email", type: "email", required: true },
     { label: "Password", name: "password", type: "password", required: true },
+    { label: "Branch", name: "branch" },
+    { label: "Semester", name: "semester", type: "number" },
   ];
  
   // University field configurations
@@ -132,7 +134,7 @@ const RegisterStudent = () => {
     >
       {/* Autocomplete component for selecting a university */}
       <UniversityAutocomplete
-        universities={universities}
+        universities={universities1}
         selectedUniversity={selectedUniversity}
         onUniversityChange={handleUniversityChange}
       />

@@ -3,6 +3,7 @@ package com.example.backend.Entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,6 +27,7 @@ import java.util.Set;
   - difficultyLevel: Represents the difficulty level of the exam (e.g., EASY, MEDIUM, HARD).
   - examQuestions: A one-to-many relationship with ExamQuestion, linking the exam to its questions.
   - studentExams: A one-to-many relationship with StudentExam, linking the exam to students' exam attempts.
+  - scheduleDate: Stores the date of exam it will be conducted.
 
  * Relationships:
   - @ManyToMany (universities): Establishes a many-to-many relationship with the University entity,
@@ -71,6 +73,9 @@ public class Exam {
 
     @Column(nullable = false)
     private String difficultyLevel;
+
+    @Column(nullable = false)
+    private LocalDate scheduleDate;
 
     @OneToMany(mappedBy = "exam", cascade = CascadeType.ALL)
     @JsonManagedReference
@@ -174,5 +179,13 @@ public class Exam {
 
     public void setStudentExams(Set<StudentExam> studentExams) {
         this.studentExams = studentExams;
+    }
+
+    public LocalDate getScheduleDate() {
+        return scheduleDate;
+    }
+
+    public void setScheduleDate(LocalDate scheduleDate) {
+        this.scheduleDate = scheduleDate;
     }
 }

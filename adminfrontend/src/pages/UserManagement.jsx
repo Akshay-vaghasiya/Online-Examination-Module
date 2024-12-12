@@ -11,11 +11,9 @@ import TableComponent from "../components/TableComponent";
 import { Delete, Edit, Quiz } from "@mui/icons-material";
 import CustomDialogForm from "../components/CustomDialogForm";
 import ConfirmationDialog from "../components/ConfirmationDialog";
-import AuthHeader from "../Helper/AuthHeader";
-import universityService from "../services/universityService";
 import UniversityAutocomplete from "../components/UniversityAutocomplete";
 import { useNavigate } from "react-router-dom";
-import { fireToast } from "../components/fireToast";
+import { useUniversityContext } from "../contexts/UniversityContext";
 
 const UserManagement = () => {
   // Extracting user context actions and states
@@ -35,40 +33,35 @@ const UserManagement = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [deleteDialog, setDeleteDialog] = useState(false);
   const [sortOption, setSortOption] = useState("");
-  const [universities, setUniversities] = useState([]);
+  const [universities1, setUniversities] = useState([]);
   const [selectedUniversity, setSelectedUniversity] = useState(null);
-  const headers = AuthHeader(); // Setting authorization headers
   const [updateData, setUpdateData] = useState({
     userid: "",
     username: "",
     email: "",
     role: "",
+    branch: "",
+    semester: 0,
   });
-  const { getAllUniversities } = universityService; // Fetch university service
   const navigate = useNavigate();
+  const {universities,fetchUniversities}=useUniversityContext();
 
   // Fetch users and universities on component mount
   useEffect(() => {
-    fetchUniversities();
+    if(universities.length===0) {
+      fetchUniversities(navigate);
+    }
     getUsers(navigate);
   }, []);
 
-  // Fetch all universities and handle authorization errors
-  const fetchUniversities = async () => {
-    try {
-      const response = await getAllUniversities(headers);
-      const universityNames = response?.map(
-        (university) => university.universityName
-      );
-      setUniversities(universityNames);
-    } catch (error) {
-      if (error.response?.status === 401 || error.response?.status === 403) {
-        logout();
-        navigate("/");
-      }
-      fireToast("Error fetching universities " + error.message, "error");
-    }
-  };
+  // Extract university names from universities array
+  useEffect(() => { 
+    const universityNames = universities?.map(
+      (university) => university.universityName
+    );
+      
+    setUniversities(universityNames);
+  }, [universities]);
 
   // Update search term and filter users based on search input
   const handleSearch = (e) => {
@@ -115,9 +108,9 @@ const UserManagement = () => {
   }
 
   // Define table columns and row actions for user management table
-  const columns = ["UserID", "Username", "Email", "Role", "University"];
+  const columns = ["UserID", "Username", "Email", "Role", "University", "Branch", "Semester"];
   // Define data columns name for the table
-  const datacolumns = ["userid", "username", "email", "role", "university"];
+  const datacolumns = ["userid", "username", "email", "role", "university", "branch", "semester"];
   const actions = [
     {
       label: "Update Profile",
@@ -152,6 +145,8 @@ const UserManagement = () => {
     { label: "Username", name: "username", required: true },
     { label: "Email", name: "email", type: "email", required: true },
     { label: "Role", name: "role", required: true },
+    { label: "Branch", name: "branch" },
+    { label : "Semester", name : "semester" },
   ];
 
   return (
@@ -200,7 +195,7 @@ const UserManagement = () => {
         fields={userFields}
       >
         <UniversityAutocomplete
-          universities={universities}
+          universities={universities1}
           value={selectedUniversity}
           onUniversityChange={handleUniversityChange}
         />

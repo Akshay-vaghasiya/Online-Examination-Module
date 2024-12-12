@@ -54,6 +54,7 @@ public class ExamService {
         exam.setDuration(examCreateRequest.getDuration());
         exam.setStatus(examCreateRequest.getStatus());
         exam.setUniversities(universities);
+        exam.setScheduleDate(examCreateRequest.getScheduleDate());
 
         return examRepository.save(exam);
     }
@@ -202,6 +203,7 @@ public class ExamService {
         exam.setDuration(examCreateRequest.getDuration());
         exam.setPassingMarks(examCreateRequest.getPassingMarks());
         exam.setDifficultyLevel(examCreateRequest.getDifficultyLevel());
+        exam.setScheduleDate(examCreateRequest.getScheduleDate());
 
         Set<University> universities = getUniversities(examCreateRequest.getUniversities());
         exam.setUniversities(universities);

@@ -2,6 +2,7 @@ package com.example.backend.Dto;
 
 import com.example.backend.Entity.Exam;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -9,7 +10,7 @@ import java.util.Set;
 /* The ExamCreateRequest class is a Data Transfer Object (DTO) used to encapsulate the data needed to
    create a new exam or update an existing exam. This class contains fields :
     * mcqQuestions, codingQuestions, status, enable, examName, duration, universities, passingMarks, totalMarks,
-      difficultyLevel, which are required for create an exam.
+      difficultyLevel, scheduleDate, which are required for create an exam.
 
  * Fielda :
   - mcqQuestions - It will contain categories and noOfQuestions per category of mcq questions.
@@ -22,6 +23,7 @@ import java.util.Set;
   - passingMarks - It will contain integer value as passing marks.
   - totalMarks - It will contain integer value as total marks of exam.
   - difficultyLevel - It will contain exam difficulty level.
+  - scheduleDate - It will contain date of exam on which it will be conducted.
 
  * Methods:
   - Getter and Setter methods for each field are provided to allow controlled access and modification of the data fields. */
@@ -37,6 +39,8 @@ public class ExamCreateRequest {
 
     private String duration;
     private Set<String> universities = new HashSet<>();
+
+    private LocalDate scheduleDate;
 
     private int passingMarks;
     private int totalMarks;
@@ -120,5 +124,13 @@ public class ExamCreateRequest {
 
     public void setEnable(boolean enable) {
         this.enable = enable;
+    }
+
+    public LocalDate getScheduleDate() {
+        return scheduleDate;
+    }
+
+    public void setScheduleDate(LocalDate scheduleDate) {
+        this.scheduleDate = scheduleDate;
     }
 }

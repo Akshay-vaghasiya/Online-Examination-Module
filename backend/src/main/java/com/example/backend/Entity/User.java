@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 /* Entity class representing a User in the system.
 
  * This class maps to the "users" table in the database and contains fields for storing
-   essential user details like username, email, password, role, university affiliation, and timestamps.
+   essential user details like username, email, password, branch, semester, role, university affiliation, and timestamps.
 
  * Each user is uniquely identified by the userId (primary key), and email addresses are unique across users.
  * The university field links each user to a University entity, allowing for optional affiliation with a university.
@@ -36,6 +36,11 @@ public class User {
 
     @Column(nullable = false)
     private String password;
+
+    private String branch;
+
+    @Column(nullable = true)
+    private int semester = 0;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -115,6 +120,22 @@ public class User {
 
     public void setUniversity(University university) {
         this.university = university;
+    }
+
+    public String getBranch() {
+        return branch;
+    }
+
+    public void setBranch(String branch) {
+        this.branch = branch;
+    }
+
+    public int getSemester() {
+        return semester;
+    }
+
+    public void setSemester(int semester) {
+        this.semester = semester;
     }
 }
 

@@ -59,11 +59,18 @@ public class AuthService {
      param role - Contains role of user which will register.
      return - ResponseEntity indicating the registration success or error status. */
     public ResponseEntity<?> registerUser(RegisterRequest registerRequest, User.Role role) {
+
+        if(role == User.Role.STUDENT &&  !(registerRequest.getSemester() >= 1 && registerRequest.getSemester() <= 8)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("semester must be between 1 to 8");
+        }
+
         User user = new User();
         user.setPassword(encoder.encode(registerRequest.getPassword())); // Encodes password
         user.setEmail(registerRequest.getEmail());
         user.setUsername(registerRequest.getUsername());
         user.setRole(role);
+        user.setSemester(registerRequest.getSemester());
+        user.setBranch(registerRequest.getBranch());
 
         University university = universityService.getUniversityByName(registerRequest.getUniversity());
         user.setUniversity(university);
