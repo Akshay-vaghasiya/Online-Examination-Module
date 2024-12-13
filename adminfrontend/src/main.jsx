@@ -8,6 +8,7 @@ import { ToastContainer } from 'react-toastify';
 import { UserProvider } from './contexts/UserContext';
 import { UniversityProvider } from './contexts/UniversityContext';
 import { QuestionProvider } from './contexts/QuestionContext';
+import { ExamProvider } from './contexts/ExamContext';
 
 // Creating a theme for the Material-UI components
 const theme = createTheme();
@@ -17,14 +18,16 @@ createRoot(document.getElementById('root')).render(
     <>
       <AuthProvider> {/* Providing authentication context to the application */}
         <UniversityProvider> {/* Providing university context to the application */}
-          <QuestionProvider> {/* Providing question context to the application */}
-            <UserProvider> {/* Providing user context to the application */}
-              <ThemeProvider theme={theme}> {/* Applying the created theme to the application */}
-                <CssBaseline /> {/* Normalize CSS styles across browsers */}
-                <App />
-              </ThemeProvider>
-            </UserProvider>
-          </QuestionProvider>
+          <ExamProvider> {/* Providing exam context to the application */}
+            <QuestionProvider> {/* Providing question context to the application */}
+              <UserProvider> {/* Providing user context to the application */}
+                <ThemeProvider theme={theme}> {/* Applying the created theme to the application */}
+                  <CssBaseline /> {/* Normalize CSS styles across browsers */}
+                  <App />
+                </ThemeProvider>
+              </UserProvider>
+            </QuestionProvider>
+          </ExamProvider>
         </UniversityProvider>
       </AuthProvider>
       <ToastContainer /> {/* Configures toast notifications to display messages throughout the app */}

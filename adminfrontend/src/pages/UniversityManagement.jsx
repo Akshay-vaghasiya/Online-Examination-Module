@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 
 const UniversityManagement = () => {
   // Context methods and state for universities
-  const { isLoading, isError, filteredUniversities, updateUniversity, deleteUniversity, searchUniversities, fetchUniversities } = useUniversityContext();
+  const { isLoading, isError, universities, filteredUniversities, updateUniversity, deleteUniversity, searchUniversities, fetchUniversities } = useUniversityContext();
 
   // State for managing dialog visibility and selected university data
   const [openDialog, setOpenDialog] = useState(false);
@@ -31,7 +31,9 @@ const UniversityManagement = () => {
 
   // Fetch universities on component mount
   useEffect(() => {
-    fetchUniversities();  
+    if (universities.length === 0) {
+      fetchUniversities();
+    }
   }, []);
   
   // Handle search functionality

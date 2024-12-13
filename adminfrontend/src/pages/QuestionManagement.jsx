@@ -50,9 +50,6 @@ const QuestionManagement = () => {
     fetchMcqQuestions(navigate);
   }, []);
 
-  console.log(filteredquestions);
-  
-
   // Open dialog for adding or editing a question
   const handleOpenDialog = (question = null) => {
     setIsEditing(!!question); // Set editing mode based on question existence
