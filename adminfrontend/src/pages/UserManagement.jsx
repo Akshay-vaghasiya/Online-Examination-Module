@@ -124,7 +124,7 @@ const UserManagement = () => {
     },
     {
       label: "Delete User",
-      color: "secondary",
+      color: "error",
       icon: <Delete />,
       handler: (user) => {
         setUpdateData(user);
@@ -151,8 +151,10 @@ const UserManagement = () => {
 
   return (
     <div>
-      <h2>User Management</h2>
-
+      <Typography variant="h4" align="center" gutterBottom>
+        User Management
+      </Typography>
+      
       {/* Search and sort controls */}
       <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
         <TextField

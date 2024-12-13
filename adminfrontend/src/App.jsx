@@ -9,6 +9,7 @@ import ResetPassword from './pages/ResetPassword';
 import UserManagement from './pages/UserManagement';
 import UniversityManagement from './pages/UniversityManagement';
 import QuestionManagement from './pages/QuestionManagement';
+import ExamManagement from './pages/ExamManagement';
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ const App = () => {
             <Route path='user-management' element={<UserManagement />} />
             <Route path='university-management' element={<UniversityManagement />} />
             <Route path='questions' element={<QuestionManagement />} />
+            <Route path='exams' element={<ExamManagement />} />
           </Route>
         </Route>
       </Routes>

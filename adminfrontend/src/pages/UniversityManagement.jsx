@@ -103,7 +103,9 @@ const UniversityManagement = () => {
 
   return (
     <div>
-      <h2>University Management</h2>
+      <Typography variant="h4" align="center" gutterBottom>
+        University Management
+      </Typography>
 
       {/* Search input */}
       <TextField

@@ -7,6 +7,9 @@ import {
   TextField,
   Button,
   MenuItem,
+  FormControl,
+  InputLabel,
+  Select,
 } from "@mui/material";
 
 // CustomDialogForm is a reusable dialog component for displaying forms.
@@ -25,7 +28,17 @@ const CustomDialogForm = ({
 }) => {
   // Handle form field value changes
   const handleChange = (field) => (event) => {
-    setFormData({ ...formData, [field]: event.target.value });
+    let value = event.target.value;
+    const type = event.target.type;
+
+    if (type === "number") {
+      value = parseInt(value);
+    }
+
+    setFormData({
+      ...formData,
+      [field]: value,
+    });
   };
 
   return (
@@ -33,28 +46,32 @@ const CustomDialogForm = ({
       <DialogTitle align="center">{title}</DialogTitle>
       <DialogContent>
         {/* Render form fields dynamically based on the fields array */}
-        {fields.map(({ label, name, type, required = false, options, rows, disabled }) => {
+        {fields.map(({ label, name, type, required = false, options, rows, disabled, isMultiple = false }) => {
           if (type === "select") {
             // Render a dropdown field
             return (
-              <TextField
-                key={name}
-                select
-                label={label}
-                fullWidth
-                margin="normal"
-                required={required}
-                value={formData[name] || ""}
-                onChange={handleChange(name)}
-                disabled={disabled}
-              >
-                {options.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-            );
+                <FormControl
+                  fullWidth
+                  margin="normal"
+                  required={required}
+                  key={name}
+                >
+                  <InputLabel>{label}</InputLabel>
+                  <Select
+                    label={label}
+                    value={formData[name] || (isMultiple ? [] : "")}
+                    onChange={handleChange(name)}
+                    multiple={isMultiple}
+                    disabled={disabled}
+                  >
+                    {options.map((option, index) => (
+                      <MenuItem key={index} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              );
           } else if (type === "textarea") {
             // Render a multiline text area
             return (

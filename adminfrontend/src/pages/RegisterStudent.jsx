@@ -47,7 +47,7 @@ const RegisterStudent = () => {
 
   // Handle university selection or creation
   const handleUniversityChange = (event, value) => {
-    if (value.substring(0, 5) === "Add: ") {  // If user chooses to add a new university
+    if (value?.substring(0, 5) === "Add: ") {  // If user chooses to add a new university
       setOpenDialog(true);  // Open the dialog to add university
     } else {
       setSelectedUniversity(value);  // Set the selected university

@@ -70,7 +70,7 @@ const Sidebar = ({ isOpen, onClose, selectedIndex, onItemClick }) => {
     { text: 'User Management', icon: <PeopleAlt />, link: '/admin/user-management' },
     { text: 'University Management', icon: <School />, link: '/admin/university-management' },
     { text: 'Questions Management', icon: <Quiz />, link: '/admin/questions' },
-    { text: 'Exams', icon: <Description />, link: '/admin/exams' },
+    { text: 'Exams Management', icon: <Description />, link: '/admin/exams' },
   ];
 
   useEffect(() => {

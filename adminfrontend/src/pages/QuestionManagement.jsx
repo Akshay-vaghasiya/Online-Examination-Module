@@ -32,6 +32,7 @@ const QuestionManagement = () => {
   const {
     isLoading,
     isError,
+    questions,
     filteredquestions,
     registerMcqQuestion,
     registerCodingQuestion,
@@ -46,8 +47,11 @@ const QuestionManagement = () => {
 
   // Fetch questions on component mount
   useEffect(() => {
-    fetchCodingQuestions(navigate);
-    fetchMcqQuestions(navigate);
+
+    if(questions.length === 0){
+      fetchCodingQuestions(navigate);
+      fetchMcqQuestions(navigate);
+    }
   }, []);
 
   // Open dialog for adding or editing a question
@@ -281,7 +285,7 @@ const QuestionManagement = () => {
       </Typography>
 
       {/* Search bar and add button */}
-      <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
+      <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem", marginTop: "1.5rem" }}>
         <TextField
           label="Search"
           variant="outlined"
