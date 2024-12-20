@@ -1,6 +1,7 @@
 package com.example.backend.Entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -56,6 +57,7 @@ public class StudentExam {
     private boolean isCompleted;
 
     @OneToMany(mappedBy = "studentExam", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Set<StudentAnswer> answers = new HashSet<>();
 
     public Long getId() {

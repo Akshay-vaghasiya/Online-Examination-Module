@@ -1,5 +1,6 @@
 package com.example.backend.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 /* The StudentAnswer class is an entity representing an answer submitted by a student during an exam.
@@ -37,6 +38,7 @@ public class StudentAnswer {
 
     @ManyToOne
     @JoinColumn(name = "student_exam_id", nullable = false)
+    @JsonBackReference
     private StudentExam studentExam;
 
     @ManyToOne
