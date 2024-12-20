@@ -66,6 +66,12 @@ public class Exam {
     private Set<University> universities = new HashSet<>();
 
     @Column(nullable = false)
+    private String branch;
+
+    @Column(nullable = false)
+    private int semester;
+
+    @Column(nullable = false)
     private int passingMarks;
 
     @Column(nullable = false)
@@ -187,5 +193,21 @@ public class Exam {
 
     public void setScheduleDate(LocalDate scheduleDate) {
         this.scheduleDate = scheduleDate;
+    }
+
+    public String getBranch() {
+        return branch;
+    }
+
+    public void setBranch(String branch) {
+        this.branch = branch;
+    }
+
+    public int getSemester() {
+        return semester;
+    }
+
+    public void setSemester(int semester) {
+        this.semester = semester;
     }
 }
