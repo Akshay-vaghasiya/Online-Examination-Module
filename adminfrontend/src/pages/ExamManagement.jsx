@@ -65,6 +65,8 @@ const ExamManagement = () => {
       examName: "",
       duration: "",
       universities: [],
+      branch : "",
+      semester: 0,
       passingMarks: 0,
       totalMarks: 0,
       difficultyLevel: "Easy",
@@ -142,8 +144,8 @@ const ExamManagement = () => {
   };
 
   // Table configuration
-  const columns = ["Exam Name", "Status", "Difficulty", "Duration (In Minutes)", "Total Marks", "Passing Marks", "Schedule Date(YYYY-MM-DD)"];
-  const datacolumns = ["examName", "status", "difficultyLevel", "duration", "totalMarks", "passingMarks", "scheduleDate"];
+  const columns = ["Exam Name", "Status", "Difficulty", "Duration (In Minutes)", "Total Marks", "Passing Marks", "Schedule Date(YYYY-MM-DD)", "Branch", "Semester"];
+  const datacolumns = ["examName", "status", "difficultyLevel", "duration", "totalMarks", "passingMarks", "scheduleDate", "branch", "semester"];
 
   // Form fields configuration
   const formFields = [
@@ -168,6 +170,8 @@ const ExamManagement = () => {
         isMultiple: true,
         required: true
       },
+    { label: "Branch", name: "branch", type: "text", required: true },
+    { label: "Semester", name: "semester", type: "number", required: true },    
     { label: "Total Marks", name: "totalMarks", type: "number", required: true },
     { label: "Passing Marks", name: "passingMarks", type: "number", required: true },
   ];

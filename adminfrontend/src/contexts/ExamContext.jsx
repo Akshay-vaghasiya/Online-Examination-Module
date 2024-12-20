@@ -68,6 +68,8 @@ const ExamProvider = ({ children }) => {
         totalMarks: inputData.totalMarks,
         difficultyLevel: inputData.difficultyLevel,
         scheduleDate: inputData.scheduleDate,
+        branch: inputData.branch,
+        semester: inputData.semester
       };
       
 
