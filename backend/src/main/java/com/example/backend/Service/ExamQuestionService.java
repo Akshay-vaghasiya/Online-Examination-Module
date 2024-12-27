@@ -3,6 +3,7 @@ package com.example.backend.Service;
 import com.example.backend.Dto.*;
 import com.example.backend.Entity.Exam;
 import com.example.backend.Entity.ExamQuestion;
+import com.example.backend.Entity.StudentAnswer;
 import com.example.backend.Entity.StudentExam;
 import com.example.backend.Repository.ExamQuestionRepository;
 import com.example.backend.Repository.ExamRepository;
@@ -72,7 +73,33 @@ public class ExamQuestionService {
 
         List<ExamQuestion> codingQuestionsList = codingQuestions.getContent();
 
-        return mapToExamQuestionDTO(codingQuestionsList);
+        List<ExamQuestionDTO> questions = mapToExamQuestionDTO(codingQuestionsList);
+
+        Set<StudentAnswer> answers = studentExam.getAnswers();
+
+        for(StudentAnswer answer : answers) {
+
+            if(answer.getCodingQuestion() != null) {
+
+                for(ExamQuestionDTO examQuestionDTO : questions) {
+
+                    if (examQuestionDTO.getCodingQuestion().getId() == answer.getCodingQuestion().getId()) {
+                        examQuestionDTO.setAnswer(answer.getAnswer());
+                        break;
+                    }
+                }
+            } else {
+                for(ExamQuestionDTO examQuestionDTO : questions) {
+
+                    if (examQuestionDTO.getMcqQuestion().getId() == answer.getMcqQuestion().getId()) {
+                        examQuestionDTO.setAnswer(answer.getAnswer());
+                        break;
+                    }
+                }
+            }
+        }
+
+        return questions;
     }
 
     /* Retrieves coding questions for a specific exam.
@@ -111,7 +138,33 @@ public class ExamQuestionService {
 
         List<ExamQuestion> codingQuestionsList = codingQuestions.getContent();
 
-        return mapToExamQuestionDTO(codingQuestionsList);
+        List<ExamQuestionDTO> questions = mapToExamQuestionDTO(codingQuestionsList);
+
+        Set<StudentAnswer> answers = studentExam.getAnswers();
+
+        for(StudentAnswer answer : answers) {
+
+            if(answer.getCodingQuestion() != null) {
+
+                for(ExamQuestionDTO examQuestionDTO : questions) {
+
+                    if (examQuestionDTO.getCodingQuestion().getId() == answer.getCodingQuestion().getId()) {
+                        examQuestionDTO.setAnswer(answer.getAnswer());
+                        break;
+                    }
+                }
+            } else {
+                for(ExamQuestionDTO examQuestionDTO : questions) {
+
+                    if (examQuestionDTO.getMcqQuestion().getId() == answer.getMcqQuestion().getId()) {
+                        examQuestionDTO.setAnswer(answer.getAnswer());
+                        break;
+                    }
+                }
+            }
+        }
+
+        return questions;
     }
 
     /* Maps a list of ExamQuestion entities to their corresponding ExamQuestionDTO.

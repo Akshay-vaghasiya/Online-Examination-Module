@@ -8,6 +8,7 @@ package com.example.backend.Dto;
    - mcqQuestion: Contains the details of MCQ question which represented in the `McqQuestionDTO` class.
    - codingQuestion: Contains the details of a coding question which represented in the `CodingQuestionDTO` class.
    - marks: Contains the marks assigned to this question in the exam.
+   - answer: Contains the answer given by student in past for that question.
 
  * Methods:
    - Getter and Setter methods are provided for each field to allow controlled access and modification of question details. */
@@ -17,6 +18,7 @@ public class ExamQuestionDTO {
     private McqQuestionDTO mcqQuestion;
     private CodingQuestionDTO codingQuestion;
     private int marks;
+    private String answer;
 
     public Long getId() {
         return id;
@@ -48,5 +50,13 @@ public class ExamQuestionDTO {
 
     public void setMarks(int marks) {
         this.marks = marks;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
     }
 }

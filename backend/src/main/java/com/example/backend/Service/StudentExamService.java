@@ -31,6 +31,10 @@ public class StudentExamService {
     @Autowired
     private StudentExamRepository studentExamRepository;
 
+    // Injects an instance of ExamResultRepository for database operations
+    @Autowired
+    private ExamResultRepository examResultRepository;
+
     /* Finds all eligible exams for a student based on their university, branch, and semester.
 
       @param email - The email of the student.
@@ -53,17 +57,19 @@ public class StudentExamService {
         return exams.stream()
                 .filter(exam -> {
                     if (exam.isEnable() && exam.getBranch().equalsIgnoreCase(user.getBranch()) && exam.getSemester() == user.getSemester()) {
-                        return true;
+                        Optional<StudentExam> studentExam = studentExamRepository.findByStudentEmailAndExamId(email, exam.getId());
+                        if (!studentExam.isPresent()) return true;
+
+                        String duration = exam.getDuration();
+                        int durationInt = Integer.parseInt(duration);
+
+                        LocalDateTime startTime = studentExam.get().getStartTime();
+                        LocalDateTime endTime = studentExam.get().getEndTime();
+
+                        return (durationInt > Duration.between(startTime, endTime).toMinutes() && !studentExam.get().isCompleted());
                     }
 
-                    StudentExam studentExam = studentExamRepository.findByStudentEmailAndExamId(email, exam.getId()).get();
-                    String duration = exam.getDuration();
-                    int durationInt = Integer.parseInt(duration);
-
-                    LocalDateTime startTime = studentExam.getStartTime();
-                    LocalDateTime endTime = studentExam.getEndTime();
-
-                    return (durationInt > Duration.between(startTime, endTime).toMinutes() && !studentExam.isCompleted());
+                    return false;
                 })
                 .map(exam -> {
                     StudentExamDisplay examDisplay = new StudentExamDisplay();
@@ -135,11 +141,46 @@ public class StudentExamService {
         if(studentExam == null) {
             throw new EntityNotFoundException("Student Exam not found");
         }
-
         studentExam.setCompleted(true);
         studentExam.setEndTime(LocalDateTime.now());
-
         studentExamRepository.save(studentExam);
+
+        ExamResult examResult = new ExamResult();
+        examResult.setExam(studentExam.getExam());
+        examResult.setStudent(studentExam.getStudent());
+
+        int marks = 0;
+        for(StudentAnswer answer : studentExam.getAnswers()) {
+
+            if(answer.getMcqQuestion() != null && answer.isCorrect()) {
+
+                if(answer.getMcqQuestion().getDifficultyLevel().equalsIgnoreCase("Easy")) {
+                    marks += 1;
+                } else if (answer.getMcqQuestion().getDifficultyLevel().equalsIgnoreCase("Medium")) {
+                    marks += 2;
+                } else {
+                    marks += 3;
+                }
+
+
+            } else if (answer.getCodingQuestion() != null && answer.isCorrect()){
+
+                if(answer.getCodingQuestion().getDifficultyLevel().equalsIgnoreCase("Easy")) {
+                    marks += 20;
+                } else if (answer.getCodingQuestion().getDifficultyLevel().equalsIgnoreCase("Medium")) {
+                    marks += 30;
+                } else {
+                    marks += 40;
+                }
+            }
+        }
+
+        if(marks >= studentExam.getExam().getPassingMarks()) {
+            examResult.setPassed(true);
+        }
+        examResult.setMarksObtained(marks);
+
+        examResultRepository.save(examResult);
 
         return "Successfully exam submited";
     }
