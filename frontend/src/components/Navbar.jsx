@@ -44,7 +44,6 @@ const Navbar = () => {
   // Define the items in the navigation bar
   const navItems = [
     { text: 'Exams', icon: <AssignmentIcon />, link: '/student/exams' },
-    { text: 'Profile', icon: <AccountCircleIcon />, link: '/student/profile' },
     { text: 'Logout', icon: <LogoutIcon /> },
   ];
 
