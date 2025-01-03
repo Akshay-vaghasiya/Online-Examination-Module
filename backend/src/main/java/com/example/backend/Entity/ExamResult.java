@@ -1,5 +1,6 @@
 package com.example.backend.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 /* The ExamResult class is an entity representing the result of a specific exam for a student.
@@ -28,6 +29,7 @@ public class ExamResult {
 
     @ManyToOne
     @JoinColumn(name = "exam_id", nullable = false)
+    @JsonBackReference
     private Exam exam;
 
     @ManyToOne

@@ -5,14 +5,14 @@ package com.example.backend.Dto;
 
  * Fields:
    - sourceCode: Contains the source code written by the student.
-   - languageId: Represents the unique identifier of the programming language.
+   - language: Represents the programming language.
    - stdin: Contains standard input data that will be passed to api which run source code.
 
  * Methods:
    - Getter and Setter methods are provided for each field to allow controlled access and modification of the code request details. */
 public class CodeRequest {
     private String sourceCode;
-    private int languageId;
+    private String language;
     private String stdin;
 
     public String getSourceCode() {
@@ -23,12 +23,12 @@ public class CodeRequest {
         this.sourceCode = sourceCode;
     }
 
-    public int getLanguageId() {
-        return languageId;
+    public String getLanguage() {
+        return language;
     }
 
-    public void setLanguageId(int languageId) {
-        this.languageId = languageId;
+    public void setLanguage(String language) {
+        this.language = language;
     }
 
     public String getStdin() {

@@ -49,7 +49,7 @@ public class StudentAnswer {
     @JoinColumn(name = "coding_question_id", nullable = true)
     private CodingQuestion codingQuestion;
 
-    @Column(nullable = false, length = Integer.MAX_VALUE)
+    @Column(length = Integer.MAX_VALUE)
     private String answer;
 
     private String language;

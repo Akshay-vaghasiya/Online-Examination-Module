@@ -79,16 +79,8 @@ public class ExamQuestionService {
 
         for(StudentAnswer answer : answers) {
 
-            if(answer.getCodingQuestion() != null) {
+            if(answer.getMcqQuestion() != null) {
 
-                for(ExamQuestionDTO examQuestionDTO : questions) {
-
-                    if (examQuestionDTO.getCodingQuestion().getId() == answer.getCodingQuestion().getId()) {
-                        examQuestionDTO.setAnswer(answer.getAnswer());
-                        break;
-                    }
-                }
-            } else {
                 for(ExamQuestionDTO examQuestionDTO : questions) {
 
                     if (examQuestionDTO.getMcqQuestion().getId() == answer.getMcqQuestion().getId()) {
@@ -150,14 +142,7 @@ public class ExamQuestionService {
 
                     if (examQuestionDTO.getCodingQuestion().getId() == answer.getCodingQuestion().getId()) {
                         examQuestionDTO.setAnswer(answer.getAnswer());
-                        break;
-                    }
-                }
-            } else {
-                for(ExamQuestionDTO examQuestionDTO : questions) {
-
-                    if (examQuestionDTO.getMcqQuestion().getId() == answer.getMcqQuestion().getId()) {
-                        examQuestionDTO.setAnswer(answer.getAnswer());
+                        examQuestionDTO.setLanguage(answer.getLanguage());
                         break;
                     }
                 }

@@ -71,11 +71,11 @@ public class StudentExamService {
         this.webClient = webClientBuilder.baseUrl("https://judge0-ce.p.rapidapi.com").build();
         this.objectMapper = objectMapper;
 
-        languagemap.put("C++", 105);
-        languagemap.put("Java", 91);
-        languagemap.put("Javascript", 102);
-        languagemap.put("Python", 71);
-        languagemap.put("C", 103);
+        languagemap.put("cpp", 105);
+        languagemap.put("java", 91);
+        languagemap.put("javascript", 102);
+        languagemap.put("python", 71);
+        languagemap.put("c", 103);
     }
 
     /* Finds all eligible exams for a student based on their university, branch, and semester.
@@ -316,13 +316,13 @@ public class StudentExamService {
        @return The result of the code execution.
        @throws IllegalArgumentException - If the source code or language ID is invalid.
        @throws RuntimeException - If the API call or response processing fails. */
-    public Object runCode(String sourceCode, int languageId, String stdin) {
+    public Object runCode(String sourceCode, String language, String stdin) {
         if (sourceCode == null || sourceCode.trim().isEmpty()) {
             throw new IllegalArgumentException("Source code cannot be null or empty");
         }
 
-        if (languageId <= 0) {
-            throw new IllegalArgumentException("Invalid language ID: " + languageId);
+        if (languagemap.get(language) == null) {
+            throw new IllegalArgumentException("Invalid language ID: " + language);
         }
 
         HttpHeaders headers = new HttpHeaders();
@@ -332,7 +332,7 @@ public class StudentExamService {
 
         Map<String, Object> body = new HashMap<>();
         body.put("source_code", sourceCode);
-        body.put("language_id", languageId);
+        body.put("language_id", languagemap.get(language));
         body.put("stdin", stdin);
 
         try {
@@ -405,7 +405,7 @@ public class StudentExamService {
             stdin += codingTestCase.getInputData() + "\n";
         }
 
-        Map<String, Object> response = (Map<String, Object>) runCode(studentAnswerDTO.getAnswer(), languagemap.get(studentAnswerDTO.getLanguage()), stdin);
+        Map<String, Object> response = (Map<String, Object>) runCode(studentAnswerDTO.getAnswer(), studentAnswerDTO.getLanguage(), stdin);
 
         if (response.get("stderr") != null || response.get("error") != null) {
             return "Your code gives an error.";

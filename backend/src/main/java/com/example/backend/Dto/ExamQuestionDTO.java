@@ -9,6 +9,7 @@ package com.example.backend.Dto;
    - codingQuestion: Contains the details of a coding question which represented in the `CodingQuestionDTO` class.
    - marks: Contains the marks assigned to this question in the exam.
    - answer: Contains the answer given by student in past for that question.
+   - language: Contains coding question language otherwise null.
 
  * Methods:
    - Getter and Setter methods are provided for each field to allow controlled access and modification of question details. */
@@ -19,6 +20,7 @@ public class ExamQuestionDTO {
     private CodingQuestionDTO codingQuestion;
     private int marks;
     private String answer;
+    private String language;
 
     public Long getId() {
         return id;
@@ -58,5 +60,13 @@ public class ExamQuestionDTO {
 
     public void setAnswer(String answer) {
         this.answer = answer;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 }

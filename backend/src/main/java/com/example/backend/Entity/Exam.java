@@ -91,6 +91,10 @@ public class Exam {
     @JsonManagedReference
     private Set<StudentExam> studentExams = new HashSet<>();
 
+    @OneToMany(mappedBy = "exam", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Set<ExamResult> examResults;
+
     public enum ExamStatus {
         SCHEDULED,
         STARTED,
