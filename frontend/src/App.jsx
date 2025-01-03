@@ -5,8 +5,10 @@ import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './components/Layout';
+import ExamPage from './pages/ExamPage';
+import Exams from './pages/Exams';
+
 const App = () => {
-  const Exams = () => <Typography variant="h4">Exams Content</Typography>;
   return (
     <Router>
       <Routes>
@@ -19,6 +21,7 @@ const App = () => {
           <Route path='/student' element={<Layout />}>
             <Route path="exams" element={<Exams />} />
           </Route>
+          <Route path="/exam/:examId" element={<ExamPage />} />
         </Route>
       </Routes>
     </Router>
