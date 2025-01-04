@@ -8,6 +8,11 @@ import com.example.backend.Entity.PasswordResetToken;
 import com.example.backend.Entity.University;
 import com.example.backend.Entity.User;
 import com.example.backend.Repository.PasswordResetTokenRepository;
+import com.example.backend.Repository.UserRepository;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +21,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /* This service coordinates authentication-related operations, such as registering users, generating and
@@ -49,6 +58,10 @@ public class AuthService {
     // Injects UniversityService to manage University data
     @Autowired
     private UniversityService universityService;
+
+    // Injects UserRepository to manage User data in database
+    @Autowired
+    private UserRepository userRepository;
 
     // Encrypts passwords using BCrypt with a strength of 12
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
@@ -170,6 +183,49 @@ public class AuthService {
      return true if the token has expired; otherwise, false. */
     public boolean isTokenExpired(PasswordResetToken token) {
         return token.getExpiryDate().isBefore(LocalDateTime.now());
+    }
+
+    /* Register new student which is written inside uploaded file.
+
+     param file - Contains uploaded file in frontend.
+     return - ResponseEntity indicating the registration success or error status. */
+    public ResponseEntity<?> registerUserExcel(MultipartFile file) throws IOException {
+        List<User> users = new ArrayList<>();
+        Workbook workbook = new XSSFWorkbook(file.getInputStream());
+        Sheet sheet = workbook.getSheetAt(0);
+
+        for (Row row : sheet) {
+            if (row.getRowNum() == 0) continue;
+
+            User user = new User();
+
+            user.setUsername(row.getCell(0).getStringCellValue());
+            user.setEmail(row.getCell(1).getStringCellValue());
+            user.setPassword(row.getCell(2).getStringCellValue());
+            user.setBranch(row.getCell(3).getStringCellValue());
+            user.setSemester((int)row.getCell(4).getNumericCellValue());
+
+            University university = universityService.getUniversityByName(row.getCell(5).getStringCellValue());
+
+            if(university == null) {
+                university = new University();
+                university.setUniversityName(row.getCell(5).getStringCellValue());
+                universityService.saveUniversity(university);
+            }
+
+            user.setUniversity(universityService.getUniversityByName(row.getCell(5).getStringCellValue()));
+            user.setRole(User.Role.STUDENT);
+
+            users.add(user);
+        }
+        try {
+            userRepository.saveAll(users);
+            return ResponseEntity.ok("Users Register Successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        } finally {
+            workbook.close();
+        }
     }
 }
 

@@ -8,6 +8,9 @@ import com.example.backend.Service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 /* The AuthController class is a REST controller responsible for handling authentication and authorization
    requests. It provides endpoints for user registration, login (for both students and admins), and password
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
  * Endpoints:
   - /register-student: Handles new student registration.
+  - /register-student-excel: Handles new student registration by excel file.
   - /register-admin: Handles new admin registration.
   - /login-student: Authenticates a student user.
   - /login-admin: Authenticates an admin user.
@@ -43,6 +47,15 @@ public class AuthController {
     @PostMapping("/register-student")
     public ResponseEntity<?> registerStudent(@RequestBody RegisterRequest registerRequest) {
         return authService.registerUser(registerRequest, User.Role.STUDENT);
+    }
+
+    /* Registers new students in the system by upload excel site.
+
+     param file - Contains uploaded file in frontend.
+     return - ResponseEntity with the registration status or student details. */
+    @PostMapping("/register-student-excel")
+    public ResponseEntity<?> registerStudentExcel(@RequestParam("file") MultipartFile file) throws IOException {
+        return authService.registerUserExcel(file);
     }
 
     /* Registers a new admin in the system.

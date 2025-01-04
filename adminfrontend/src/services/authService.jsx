@@ -17,6 +17,12 @@ const registerStudent = async (data, headers) => {
   return response?.data; // Return the response data if available
 };
 
+// Register a new student with provided data and authorization headers
+const registerStudentExcel = async (data, headers) => {
+  const response = await axios.post(`${API_URL}/register-student-excel`, data, { headers });
+  return response?.data;
+};
+
 // Register a new admin with provided data and authorization headers
 const registerAdmin = async (data, headers) => {
   const response = await axios.post(`${API_URL}/register-admin`, data, { headers });
@@ -36,4 +42,4 @@ const resetPassword = async (data) => {
 };
 
 // Export all functions for use in other parts of the application
-export default { login, registerStudent, registerAdmin, forgotPassword, resetPassword };
+export default { login, registerStudent, registerAdmin, forgotPassword, resetPassword, registerStudentExcel };
