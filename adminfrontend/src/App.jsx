@@ -29,6 +29,7 @@ const App = () => {
             <Route path='university-management' element={<UniversityManagement />} />
             <Route path='questions' element={<QuestionManagement />} />
             <Route path='exams' element={<ExamManagement />} />
+            <Route path="results/:examId" element={<ExamResult />} />
           </Route>
         </Route>
       </Routes>

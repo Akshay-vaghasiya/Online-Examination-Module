@@ -9,9 +9,12 @@ import AuthHeader from "../Helper/AuthHeader";
 const initialState = {
   isLoading: false,
   isError: false,
+  results: [],
+  filteredResults: [],
   exams: [],
   filteredExams: [],
   searchTerm: "",
+  searchStudent: "",
 };
 
 // Create a context for exams
@@ -99,6 +102,14 @@ const ExamProvider = ({ children }) => {
     dispatch({ type: "SEARCH_EXAMS", payload: searchTerm });
   };
 
+  const setResults = async (examid) => {
+    await fetchExams();
+    dispatch({ type: "SET_RESULTS", payload: examid });
+  };
+
+  const searchResults = (searchTerm) => {
+    dispatch({ type: "SEARCH_RESULTS", payload: searchTerm });
+  };
   // Function to handle authentication errors
   const handleAuthError = (error, navigate) => {
     if (error?.response?.status === 401 || error?.response?.status === 403) {
@@ -117,6 +128,8 @@ const ExamProvider = ({ children }) => {
         editExam,
         removeExam,
         searchExams,
+        setResults,
+        searchResults,
       }}
     >
       {children}

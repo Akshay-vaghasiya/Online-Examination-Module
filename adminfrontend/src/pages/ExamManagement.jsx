@@ -143,6 +143,10 @@ const ExamManagement = () => {
     searchExams(event.target.value);
   };
 
+  const handleResults = (exam) => {
+    navigate(`/admin/results/${exam.id}`);
+  };
+
   // Table configuration
   const columns = ["Exam Name", "Status", "Difficulty", "Duration (In Minutes)", "Total Marks", "Passing Marks", "Schedule Date(YYYY-MM-DD)", "Branch", "Semester"];
   const datacolumns = ["examName", "status", "difficultyLevel", "duration", "totalMarks", "passingMarks", "scheduleDate", "branch", "semester"];
@@ -190,6 +194,11 @@ const ExamManagement = () => {
       handler: handleDelete,
       icon: <DeleteIcon />,
     },
+    {
+      label: "Results",
+      color: "secondary",
+      handler: handleResults,  
+    }
   ];  
 
   // If loading or error, display appropriate message

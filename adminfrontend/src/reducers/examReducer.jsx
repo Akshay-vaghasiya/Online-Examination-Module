@@ -57,6 +57,23 @@ const examReducer = (state, action) => {
             exam.examName.toLowerCase().includes(action.payload.toLowerCase())
           ),
         };
+      
+      case "SET_RESULTS":
+        return {
+          ...state,
+          results: state.exams.filter((exam) => exam.id === action.payload)[0].examResults.sort((a, b) => b.marksObtained - a.marksObtained),
+          filteredResults: state.exams.filter((exam) => exam.id === action.payload)[0].examResults.sort((a, b) => b.marksObtained - a.marksObtained),
+        };
+
+      case "SEARCH_RESULTS":
+        return {
+          ...state,
+          searchStudent: action.payload,
+          filteredResults: state.results.filter((result) =>
+            result.student.username.toLowerCase().includes(action.payload.toLowerCase())
+          ),
+        };
+        
       default:
         return state;
     }
