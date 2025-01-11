@@ -41,6 +41,8 @@ public class ExamCreateRequest {
     private Set<String> universities = new HashSet<>();
 
     private LocalDate scheduleDate;
+    private String branch;
+    private int semester;
 
     private int passingMarks;
     private int totalMarks;
@@ -132,5 +134,21 @@ public class ExamCreateRequest {
 
     public void setScheduleDate(LocalDate scheduleDate) {
         this.scheduleDate = scheduleDate;
+    }
+
+    public String getBranch() {
+        return branch;
+    }
+
+    public void setBranch(String branch) {
+        this.branch = branch;
+    }
+
+    public int getSemester() {
+        return semester;
+    }
+
+    public void setSemester(int semester) {
+        this.semester = semester;
     }
 }

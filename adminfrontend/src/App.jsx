@@ -10,6 +10,7 @@ import UserManagement from './pages/UserManagement';
 import UniversityManagement from './pages/UniversityManagement';
 import QuestionManagement from './pages/QuestionManagement';
 import ExamManagement from './pages/ExamManagement';
+import ExamResult from './pages/ExamResult';
 
 const App = () => {
   return (

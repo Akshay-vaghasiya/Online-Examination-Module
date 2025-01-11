@@ -14,14 +14,18 @@ export const AuthProvider = ({ children }) => {
   );
 
   // Login function to store token in local storage and set authentication state to true
-  const login = (token) => {
+  const login = (token, username, email) => {
     localStorage.setItem('token', token);
+    localStorage.setItem('username', username);
+    localStorage.setItem('email', email);
     setIsAuthenticated(true);
   };
 
   // Logout function to remove token from local storage and reset authentication state to false
   const logout = () => {
-    localStorage.removeItem('token'); 
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
+    localStorage.removeItem('email');
     setIsAuthenticated(false);
   };
 

@@ -214,4 +214,12 @@ public class Exam {
     public void setSemester(int semester) {
         this.semester = semester;
     }
+
+    public Set<ExamResult> getExamResults() {
+        return examResults;
+    }
+
+    public void setExamResults(Set<ExamResult> examResults) {
+        this.examResults = examResults;
+    }
 }

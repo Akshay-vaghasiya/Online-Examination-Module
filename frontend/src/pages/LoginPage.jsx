@@ -32,7 +32,7 @@ const LoginPage = () => {
       const username = data?.username;  
       
       // Perform login by setting token and username in AuthContext
-      login(token, username);
+      login(token, username, email);
 
       fireToast("Logged in successfully", "success");
       // Navigate to the exams page upon successful login

@@ -62,7 +62,7 @@ public class StudentExamController {
 
        @param id - The unique identifier of the student exam being submitted.
        @return - ResponseEntity with confirmation of successful submission or an error message in case of failure. */
-    @PutMapping("/submit-exam/{id}")
+    @PostMapping("/submit-exam/{id}")
     public ResponseEntity<?> submitExam(@PathVariable long id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(studentExamService.submitExam(id));
@@ -93,7 +93,7 @@ public class StudentExamController {
     @PostMapping("/run-code")
     public ResponseEntity<?> runCode(@RequestBody CodeRequest codeRequest) throws JsonProcessingException {
         try {
-            return ResponseEntity.ok(studentExamService.runCode(codeRequest.getSourceCode(), codeRequest.getLanguageId(), codeRequest.getStdin()));
+            return ResponseEntity.ok(studentExamService.runCode(codeRequest.getSourceCode(), codeRequest.getLanguage(), codeRequest.getStdin()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

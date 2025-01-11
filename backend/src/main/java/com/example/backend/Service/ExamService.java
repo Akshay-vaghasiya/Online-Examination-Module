@@ -55,6 +55,8 @@ public class ExamService {
         exam.setStatus(examCreateRequest.getStatus());
         exam.setUniversities(universities);
         exam.setScheduleDate(examCreateRequest.getScheduleDate());
+        exam.setBranch(examCreateRequest.getBranch());
+        exam.setSemester(examCreateRequest.getSemester());
 
         return examRepository.save(exam);
     }
